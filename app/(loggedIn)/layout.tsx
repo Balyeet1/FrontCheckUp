@@ -1,7 +1,48 @@
-export default function Home(){
+"use client"
+import React from "react";
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Avatar, User } from "@nextui-org/react";
+import { withPageAuthRequired, useUser } from '@auth0/nextjs-auth0/client';
+import Link from "next/link";
+
+export default withPageAuthRequired(function LogedInLayout({
+    children,
+}: Readonly<{
+    children: React.ReactNode;
+}>) {
+
+    const { user } = useUser()
+
     return (
         <>
-        
+            <Dropdown placement="bottom-start">
+                <DropdownTrigger>
+                    <User
+                        as="button"
+                        avatarProps={{
+                            isBordered: true,
+                            src: user?.picture ? user.picture : 'https://lh3.googleusercontent.com/-XKhiu1SzQw4/AAAAAAAAAAI/AAAAAAAAAAA/ALKGfkmy5icvnaWkuUg79sYjPhdLcjiGYA/photo.jpg?sz=46',
+                        }}
+                        className="transition-transform"
+                        description={user?.nickname}
+                        name={user?.name}
+                    />
+                </DropdownTrigger>
+                <DropdownMenu aria-label="User Actions" variant="flat">
+                    <DropdownItem key="profile" className="h-14 gap-2" aria-label="User Profile">
+                        <p className="font-bold">Signed in as</p>
+                        <p className="font-bold">{user?.nickname}</p>
+                    </DropdownItem>
+                    <DropdownItem key="settings" aria-label="User Settings">
+                        <Link href="/my-profile">Settings</Link>
+                    </DropdownItem>
+                    <DropdownItem key="logout" color="danger" href="/api/auth/logout" aria-label="Logout">
+                        Log Out
+                    </DropdownItem>
+                </DropdownMenu>
+            </Dropdown>
+            <div>
+                {children}
+            </div>
         </>
-    )
-}
+    );
+})

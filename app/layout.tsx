@@ -4,7 +4,7 @@ import "@/app/globals.css";
 import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { inter } from "@/app/ui/fonts";
-
+import { Providers } from "./providers";
 
 
 export const metadata: Metadata = {
@@ -33,11 +33,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className='dark'>
       <body className={`${inter.className} pl-[calc(100vw-100%)]`} >
-        {children}
-        <Analytics />
-        <SpeedInsights />
+        <Providers>
+          {children}
+          <Analytics />
+          <SpeedInsights />
+        </Providers>
       </body>
     </html>
   );
