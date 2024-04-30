@@ -7,8 +7,6 @@ const afterCallback = async (req, session, state) => {
 
     const user_token = await user_exists(external)
 
-    console.log(user_token)
-
     if (user_token == "") {
         state.returnTo =  `${process.env.AUTH0_BASE_URL}/setup`
     }

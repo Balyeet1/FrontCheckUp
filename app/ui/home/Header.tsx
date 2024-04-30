@@ -47,7 +47,7 @@ const Header = async () => {
                 {user && (<Link href='/my-profile/'>{user.name}</Link>)}
                 {!user && (<Link
                     href="/api/auth/login/"
-                    className="hidden font-medium text-gray-100 sm:block"
+                    className="font-medium text-gray-100"
                 >
                     Login
                 </Link>)}
