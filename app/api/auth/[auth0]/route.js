@@ -10,7 +10,7 @@ const afterCallback = async (req, session, state) => {
     console.log(user_token)
 
     if (user_token == "") {
-        state.returnTo = "http://localhost:3000/setup"
+        state.returnTo =  `${process.env.AUTH0_BASE_URL}/setup`
     }
 
     session.user['token'] = user_token
@@ -21,7 +21,7 @@ const afterCallback = async (req, session, state) => {
 export const GET = handleAuth({
     login: handleLogin(() => {
         return {
-            returnTo: "http://localhost:3000/my-blogs"
+            returnTo: `${process.env.AUTH0_BASE_URL}/my-blogs`
         };
     }),
     callback: handleCallback({ afterCallback })
