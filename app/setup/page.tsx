@@ -28,7 +28,7 @@ function SetUpPage() {
       return
     }
 
-    user.token = user_exists(external)
+    user!.token = user_exists(external)
     redirect('/my-blogs')
 
     
