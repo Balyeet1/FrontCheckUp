@@ -42,8 +42,8 @@ export async function user_exists(external: string) {
 
         return "user" in data ? data.user : ""
 
-    } catch (error) {
-        console.log(error)
+    } catch (error: any) {
+        console.log(error.response.data)
     }
 
 }
@@ -69,8 +69,8 @@ export async function create_user(external: string, username: string) {
 
         return true
 
-    } catch (error) {
-        console.log(error)
+    } catch (error: any) {
+        console.log(error.response.data)
         return false
     }
 

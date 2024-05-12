@@ -1,18 +1,19 @@
 'use client'
 import { useUser, withPageAuthRequired } from '@auth0/nextjs-auth0/client';
-import { redirect } from 'next/navigation';
 import { create_user, user_exists } from '../lib/db/action';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
-function SetUpPage() {
+function SetUpPage({ req, res }: { req: any, res: any }) {
   const { user, isLoading } = useUser()
   const token = user?.token;
+  const router = useRouter()
 
-  const [error, setError]  = useState(false)
+  const [error, setError] = useState(false)
 
 
   if (token != '') {
-    redirect('/my-blogs')
+    router.push('/my-blogs')
   }
 
 
@@ -22,16 +23,26 @@ function SetUpPage() {
   useEffect(() => {
     const success = create_user(external, username)
 
-    if(!success){
+    if (!success) {
       setError(true)
 
       return
     }
 
-    user!.token = user_exists(external)
-    redirect('/my-blogs')
+    const get_user_token = async () => {
 
-    
+      const token = await user_exists(external)
+
+      if (token == "") {
+        setError(true)
+        return
+      }
+
+      router.push('/my-blogs')
+    }
+
+    get_user_token()
+
   }, []);
 
   return (

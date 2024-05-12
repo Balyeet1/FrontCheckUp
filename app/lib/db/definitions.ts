@@ -3,3 +3,9 @@ export type User = {
   name: string;
   email: string;
 };
+
+export interface Blog {
+  title: string;
+  image: string;
+  content: string;
+}

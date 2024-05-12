@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    reactStrictMode: false,
     images: {
         remotePatterns: [
             {
@@ -7,6 +8,12 @@ const nextConfig = {
                 hostname: 'lh3.googleusercontent.com',
                 pathname: '/a/**',
             },
+            {
+                protocol: 'http',
+                hostname: '127.0.0.1',
+                port: '6699',
+                pathname: '/checkup_api/blog/images/**',
+            }
         ],
     },
     webpack(config) {
