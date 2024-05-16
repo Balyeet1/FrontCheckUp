@@ -1,9 +1,10 @@
 "use client"
 import { Suspense } from 'react';
 import Link from 'next/link';
-import { get_user_blog_headers } from '@/app/lib/db/blogs_action';
+import { get_user_blog_headers } from '@/app/lib/db/blogs_api_action';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import { createSlug } from '@/app/lib/utils';
 
 export default function BlogsList({ token }: { token: string }) {
 
@@ -24,12 +25,12 @@ export default function BlogsList({ token }: { token: string }) {
         <>
             {blogs.fetched ? (
                 <div className='grid sm:grid-cols-1 md:grid-cols-3 gap-8'>
-                    {blogs.blogs.length !== 0 ? (
+                    {blogs.blogs !== null ? (
                         blogs.blogs.map((blog: { title: string, image: string, id: number }) => (
                             <Link
                                 key={blog.id}
                                 className="flex items-center flex-wrap flex-col space-y-1 mb-4 justify-center p-4 bg-white dark:bg-neutral-800 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg hover:scale-1.0"
-                                href={`/blog/${blog.id}`}
+                                href={`/my-blogs/${createSlug(blog.title, blog.id.toString())}`}
                             >
                                 <div className="w-full flex flex-col">
                                     <p className="text-neutral-900 dark:text-neutral-100 tracking-tight">
@@ -49,10 +50,11 @@ export default function BlogsList({ token }: { token: string }) {
                             </Link>
                         </div>
                     )}
-                </div>
+                </div >
             ) : (
                 <div>Fetching</div>
-            )}
+            )
+            }
         </>
     );
 }

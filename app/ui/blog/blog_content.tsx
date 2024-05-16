@@ -1,17 +1,32 @@
 'use client'
-import { create_user_blog } from '@/app/lib/db/blogs_action';
+import { update_user_blog, create_user_blog } from '@/app/lib/db/blogs_api_action';
+import { Blog } from '@/app/lib/db/models/definitions';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
-const BlogContent = ({ token }: { token: string }) => {
+const BlogContent = ({ token, blog }: { token: string, blog?: Blog }) => {
     const router = useRouter()
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [media, setMedia] = useState<File | null>(null);
     const [mediaUrl, setMediaUrl] = useState<string | null>(null);
     const [previewMode, setPreviewMode] = useState(false);
+
+    useEffect(() => {
+        if (blog) {
+            setTitle(blog.title);
+            setContent(blog.content);
+            if (blog.image == null) return;
+            fetch(`http://127.0.0.1:6699/checkup_api/blog/download/${blog.image}`).then(response => {
+                response.blob().then(blob => {
+                    setMedia(new File([blob], blog.image, { type: blob.type }));
+                    setMediaUrl(URL.createObjectURL(blob));
+                });
+            });
+        }
+    }, [blog]);
 
     const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setTitle(event.target.value);
@@ -45,7 +60,7 @@ const BlogContent = ({ token }: { token: string }) => {
         return null;
     };
 
-    const createBlog = () => {
+    const createOrUpdateBlog = () => {
         const formData = new FormData();
         formData.append('title', title);
         formData.append('content', content);
@@ -53,12 +68,20 @@ const BlogContent = ({ token }: { token: string }) => {
             formData.append('image', media, media.name);
         }
 
-        create_user_blog(token, formData).then((response) => {
-            console.log(response)
-            if (response) {
-                router.push('/my-blogs');
-            }
-        });
+        if (blog && blog.id) {
+            update_user_blog(token, blog.id, formData).then((response) => {
+                if (response) {
+                    router.push('/my-blogs');
+                }
+            });
+        } else {
+            create_user_blog(token, formData).then((response) => {
+                console.log(response)
+                if (response) {
+                    router.push('/my-blogs');
+                }
+            });
+        }
     };
 
     return (
@@ -66,7 +89,7 @@ const BlogContent = ({ token }: { token: string }) => {
             <div className='flex-col w-full mr-2 p-4'>
                 {!previewMode &&
                     <>
-                        <div className='text-2xl font-bold pb-3'>Create Blog</div>
+                        <div className='text-2xl font-bold pb-3'>{blog ? 'Edit Blog' : 'Create Blog'}</div>
                         <div className='flex items-end mt-5 mb-5 justify-between'>
                             <label>
                                 <h4 className='text-gray-700'>
@@ -79,17 +102,19 @@ const BlogContent = ({ token }: { token: string }) => {
                     </>
                 }
                 {previewMode ?
-                    <div className='flex justify-center'>
-                        <div className='flex-col align-center'>
-                            <h1>{title}</h1>
-                            {renderMediaPreview()}
-                            <div dangerouslySetInnerHTML={{ __html: content }} />
+                    <>
+                        <div className='flex justify-center'>
+                            <div className='flex-col align-center'>
+                                <h1>{title}</h1>
+                                {renderMediaPreview()}
+                                <div dangerouslySetInnerHTML={{ __html: content }} />
+                            </div>
                         </div>
-                    </div>
+                    </>
                     : <ReactQuill value={content} onChange={handleContentChange} theme='snow' />}
                 <div className='pt-5'>
                     <button onClick={togglePreviewMode}>{previewMode ? 'Edit' : 'Preview'}</button>
-                    {previewMode && <button onClick={createBlog} className='ml-4'>Create Blog</button>}
+                    {previewMode && <button onClick={createOrUpdateBlog} className='ml-4'>{blog ? 'Update Blog' : 'Create Blog'}</button>}
                 </div>
             </div>
         </div>

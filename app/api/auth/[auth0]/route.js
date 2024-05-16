@@ -1,5 +1,5 @@
 import { handleAuth, handleLogin, handleCallback } from '@auth0/nextjs-auth0';
-import { user_exists, create_user } from '@/app/lib/db/action';
+import { user_exists, create_user } from '@/app/lib/db/user_api_action';
 
 const afterCallback = async (req, session, state) => {
 

@@ -1,6 +1,6 @@
 'use client'
 import React, { useState } from 'react';
-import { Blog } from '@/app/lib/db/definitions'
+import { Blog } from '@/app/lib/db/models/definitions'
 
 const onSubmit = (blog: Blog) => {
     console.log(blog);
