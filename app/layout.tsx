@@ -5,6 +5,7 @@ import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { inter } from "@/app/ui/fonts";
 import { Providers } from "./providers";
+import CheckServerStatus from "./ui/CheckServerStatus";
 
 
 export const metadata: Metadata = {
@@ -36,11 +37,13 @@ export default function RootLayout({
     <html lang="en" className='dark'>
       <body className={`${inter.className} pl-[calc(100vw-100%)]`} >
         <Providers>
-          {children}
+          <CheckServerStatus>
+            {children}
+          </CheckServerStatus>
           <Analytics />
           <SpeedInsights />
         </Providers>
       </body>
-    </html>
+    </html >
   );
 }

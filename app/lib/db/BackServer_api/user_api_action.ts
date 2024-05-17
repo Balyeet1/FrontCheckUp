@@ -2,7 +2,7 @@ import httpService from "@/app/lib/http_service"
 import { create_token } from "@/app/lib/utils/token_utils"
 
 
-export async function user_exists(external: string) {
+export async function userExists(external: string) {
     const issuer = 'Check'
 
     try {
@@ -21,7 +21,7 @@ export async function user_exists(external: string) {
 
 }
 
-export async function create_user(external: string, username: string) {
+export async function createUser(external: string, username: string) {
     const issuer = 'Create_Profile'
 
     try {
@@ -32,7 +32,7 @@ export async function create_user(external: string, username: string) {
         return true
 
     } catch (error: any) {
-        console.log(error.response.data)
+        console.log(error)
         return false
     }
 

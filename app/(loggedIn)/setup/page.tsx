@@ -1,6 +1,6 @@
 'use client'
 import { useUser, withPageAuthRequired } from '@auth0/nextjs-auth0/client';
-import { create_user, user_exists } from '../../lib/db/BackServer_api/user_api_action';
+import { createUser, userExists } from '../../lib/db/BackServer_api/user_api_action';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
@@ -21,7 +21,7 @@ function SetUpPage({ req, res }: { req: any, res: any }) {
   const username = user?.name ? user.name : "User"
 
   useEffect(() => {
-    const success = create_user(external, username)
+    const success = createUser(external, username)
 
     if (!success) {
       setError(true)
@@ -31,7 +31,7 @@ function SetUpPage({ req, res }: { req: any, res: any }) {
 
     const get_user_token = async () => {
 
-      const token = await user_exists(external)
+      const token = await userExists(external)
 
       if (token == "") {
         setError(true)
