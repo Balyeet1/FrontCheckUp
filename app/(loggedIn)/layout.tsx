@@ -1,10 +1,10 @@
 "use client"
 import React from "react";
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Avatar, User } from "@nextui-org/react";
-import { withPageAuthRequired, useUser } from '@auth0/nextjs-auth0/client';
+import { useUser } from '@auth0/nextjs-auth0/client';
 import Link from "next/link";
 
-export default withPageAuthRequired(function LogedInLayout({
+export default function LogedInLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;
@@ -50,4 +50,4 @@ export default withPageAuthRequired(function LogedInLayout({
             </div>
         </section>
     );
-})
+}

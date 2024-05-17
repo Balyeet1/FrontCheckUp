@@ -1,6 +1,6 @@
 import BlogContent from "@/app/ui/blog/blog_content";
 import { Metadata } from "next";
-import { getUserToken } from "@/app/lib/session_utils";
+import { getUserToken } from "@/app/lib/utils/session_utils";
 import { fetchBlogBySlug } from "@/app/lib/db/blog_actions";
 import { notFound } from "next/navigation";
 

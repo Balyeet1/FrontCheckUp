@@ -1,5 +1,5 @@
 'use client'
-import { update_user_blog, create_user_blog } from '@/app/lib/db/blogs_api_action';
+import { update_user_blog, create_user_blog } from '@/app/lib/db/BackServer_api/blogs_api_action';
 import { Blog } from '@/app/lib/db/models/definitions';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';

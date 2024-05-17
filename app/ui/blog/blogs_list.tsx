@@ -1,10 +1,10 @@
 "use client"
 import { Suspense } from 'react';
 import Link from 'next/link';
-import { get_user_blog_headers } from '@/app/lib/db/blogs_api_action';
+import { get_user_blog_headers } from '@/app/lib/db/BackServer_api/blogs_api_action';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { createSlug } from '@/app/lib/utils';
+import { createSlug } from '@/app/lib/utils/utils';
 
 export default function BlogsList({ token }: { token: string }) {
 

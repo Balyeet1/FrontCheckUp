@@ -1,5 +1,6 @@
 import { handleAuth, handleLogin, handleCallback } from '@auth0/nextjs-auth0';
-import { user_exists, create_user } from '@/app/lib/db/user_api_action';
+import { user_exists, create_user } from '@/app/lib/db/BackServer_api/user_api_action';
+import { checkServerStatus } from '@/app/lib/db/BackServer_api/api';
 
 const afterCallback = async (req, session, state) => {
 
@@ -27,6 +28,7 @@ const afterCallback = async (req, session, state) => {
 
 export const GET = handleAuth({
     login: handleLogin(() => {
+
         return {
             returnTo: `${process.env.AUTH0_BASE_URL}/my-blogs`
         };

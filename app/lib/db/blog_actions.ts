@@ -1,5 +1,5 @@
-import { getIdFromSlug, createSlug } from "@/app/lib/utils";
-import { get_user_blog } from "@/app/lib/db/blogs_api_action";
+import { getIdFromSlug, createSlug } from "@/app/lib/utils/utils";
+import { get_user_blog } from "@/app/lib/db/BackServer_api/blogs_api_action";
 import { Blog } from "./models/definitions";
 
 export async function fetchBlogBySlug(slug: string, token: string): Promise<Blog | null> {

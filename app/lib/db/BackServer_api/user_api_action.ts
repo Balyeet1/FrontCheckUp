@@ -1,5 +1,5 @@
 import httpService from "@/app/lib/http_service"
-import { create_token } from "@/app/lib/token_utils"
+import { create_token } from "@/app/lib/utils/token_utils"
 
 
 export async function user_exists(external: string) {
@@ -16,7 +16,7 @@ export async function user_exists(external: string) {
         return "user" in data ? data.user : ""
 
     } catch (error: any) {
-        console.log(error.response.data)
+        console.log(error)
     }
 
 }

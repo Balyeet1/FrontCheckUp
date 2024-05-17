@@ -1,7 +1,7 @@
 'use server'
 import { revalidatePath } from 'next/cache';
-import { createSlug } from "@/app/lib/utils";
-import httpService from '../http_service';
+import { createSlug } from "@/app/lib/utils/utils";
+import httpService from '@/app/lib/http_service';
 
 
 export async function get_user_blog_headers(user_token: string | unknown) {
