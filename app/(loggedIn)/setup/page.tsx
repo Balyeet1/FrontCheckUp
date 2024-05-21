@@ -12,7 +12,7 @@ function SetUpPage({ req, res }: { req: any, res: any }) {
   const [error, setError] = useState(false)
 
 
-  if (token != '') {
+  if (token != "") {
     router.push('/my-blogs')
   }
 
@@ -27,13 +27,13 @@ function SetUpPage({ req, res }: { req: any, res: any }) {
       setError(true)
 
       return
-    }
+    } 
 
     const get_user_token = async () => {
 
       const token = await userExists(external)
 
-      if (token == "") {
+      if (!token) {
         setError(true)
         return
       }

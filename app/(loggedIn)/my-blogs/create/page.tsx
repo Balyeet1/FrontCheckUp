@@ -1,4 +1,4 @@
-import BlogContent from "@/app/ui/blog/blog_content";
+import BlogContent from "@/app/components/blog/blog_content";
 import { Metadata } from "next";
 import { getSession } from "@auth0/nextjs-auth0";
 

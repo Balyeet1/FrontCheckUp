@@ -1,5 +1,5 @@
-import Header from "@/app/ui/home/Header";
-import SectionContainer from "@/app/ui/SectionContainer";
+import Header from "@/app/components/home/Header";
+import SectionContainer from "@/app/components/SectionContainer";
 
 export default function RootLayout({
     children,

@@ -1,11 +1,12 @@
-import type { Metadata } from "next";
-import siteMetadata from "@/data/siteMetadata";
 import "@/app/globals.css";
-import { Analytics } from "@vercel/analytics/react"
-import { SpeedInsights } from '@vercel/speed-insights/next';
-import { inter } from "@/app/ui/fonts";
-import { Providers } from "./providers";
-import CheckServerStatus from "./ui/CheckServerStatus";
+import siteMetadata from "@/data/siteMetadata";
+import { inter } from "@/app/components/fonts";
+import { Providers } from "@/app/providers";
+import CheckServerStatus from "@/app/components/CheckServerStatus";
+import PerformanceMetrics from "@/app/components/PerformanceMetrics";
+import ErrorBoundary from "@/app/components/error/ErrorBoundary";
+
+import type { Metadata } from "next";
 
 
 export const metadata: Metadata = {
@@ -38,10 +39,11 @@ export default function RootLayout({
       <body className={`${inter.className} pl-[calc(100vw-100%)]`} >
         <Providers>
           <CheckServerStatus>
-            {children}
+            <ErrorBoundary>
+              {children}
+            </ErrorBoundary>
           </CheckServerStatus>
-          <Analytics />
-          <SpeedInsights />
+          <PerformanceMetrics />
         </Providers>
       </body>
     </html >

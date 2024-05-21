@@ -1,5 +1,4 @@
 'use client'
-
 import { UserProvider } from '@auth0/nextjs-auth0/client';
 import { NextUIProvider } from '@nextui-org/react'
 

@@ -1,7 +1,7 @@
 "use client"
 import Image from 'next/image'
-import BackButton from '@/app/ui/ui_utils/backButton'
-import DeleteBlog from '@/app/ui/blog/delete_blog'
+import BackButton from '@/app/components/ui_utils/backButton'
+import DeleteBlog from '@/app/components/blog/delete_blog'
 import Link from 'next/link'
 import { Blog } from '@/app/lib/db/models/definitions'
 

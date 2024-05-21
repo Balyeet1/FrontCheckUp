@@ -1,39 +1,41 @@
-import httpService from "@/app/lib/http_service"
-import { create_token } from "@/app/lib/utils/token_utils"
+import httpService from "@/app/lib/db/BackServer_api/httpService";
+import { create_token } from "@/app/lib/utils/token_utils";
+import { HTTP_STATUS_INTERNAL_SERVER_ERROR } from "@/app/lib/httpStatusCodes";
+import { userEndpoints } from "@/app/lib/db/BackServer_api/endpoints_paths";
 
+export async function userExists(external: string): Promise<string | null> {
 
-export async function userExists(external: string) {
-    const issuer = 'Check'
+    const issuer = 'Check';
+
+    const user_data = await create_token({ 'external': external }, issuer)
 
     try {
-        const { data } = await httpService.get('/login', {
-            data: await create_token({ 'external': external }, issuer),
-            validateStatus: function (status) {
-                return status < 500;
-            }
+        const { data } = await httpService.get(userEndpoints.Login, {
+            data: user_data,
+            validateStatus: (status) => status < HTTP_STATUS_INTERNAL_SERVER_ERROR
         });
 
-        return "user" in data ? data.user : ""
-
+        return data.user ?? null;
     } catch (error: any) {
-        console.log(error)
+        console.error(error);
+        return null;
     }
-
 }
 
-export async function createUser(external: string, username: string) {
-    const issuer = 'Create_Profile'
+export async function createUser(external: string, username: string): Promise<boolean> {
+
+    const issuer = 'Create_Profile';
+
+    const data = { 'Token': await create_token({ 'external': external, 'username': username }, issuer) };
 
     try {
-        await httpService.get('/users/create', {
-            data: await create_token({ 'external': external, 'username': username }, issuer),
+        await httpService.post(userEndpoints.CreateUser, data, {
+            headers: { 'Content-Type': 'application/json' }
         });
 
-        return true
-
+        return true;
     } catch (error: any) {
-        console.log(error)
-        return false
+        console.error(error);
+        return false;
     }
-
 }

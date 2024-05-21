@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import BlogsList from '@/app/ui/blog/blogs_list';
+import BlogsList from '@/app/components/blog/blogs_list';
 import { getSession } from '@auth0/nextjs-auth0';
 import Link from 'next/link';
 

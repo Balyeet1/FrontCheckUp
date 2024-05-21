@@ -1,13 +1,21 @@
 "use client"
 import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { checkServerStatus } from '@/app/lib/db/BackServer_api/api';
 
 const CheckServerStatus: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [isServerDown, setIsServerDown] = useState(false);
 
+    const router = useRouter();
+
     useEffect(() => {
         const checkServer = async () => {
-            setIsServerDown(!(await checkServerStatus()));
+            const server_status = await checkServerStatus();
+            setIsServerDown(!server_status);
+
+            if (!server_status) {
+                router.push('/');
+            }
         };
 
         checkServer();

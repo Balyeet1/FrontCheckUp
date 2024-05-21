@@ -2,7 +2,7 @@ import Link from "next/link"
 import siteMetadata from '@/data/siteMetadata'
 import SearchButton from "./SearchButton"
 import MobileNav from "./MobileNav"
-import { space_Grotesk } from "@/app/ui/fonts"
+import { space_Grotesk } from "@/app/components/fonts"
 import Image from "next/image"
 import { getSession } from "@auth0/nextjs-auth0"
 

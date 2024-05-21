@@ -1,4 +1,4 @@
-import BlogContent from "@/app/ui/blog/blog_content";
+import BlogContent from "@/app/components/blog/blog_content";
 import { Metadata } from "next";
 import { getUserToken } from "@/app/lib/utils/session_utils";
 import { fetchBlogBySlug } from "@/app/lib/db/blog_actions";
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default async function Home({ params }: { params: { slug: string } }) {
 
   const token = await getUserToken();
-  const blog = await fetchBlogBySlug(params.slug, token);
+  const { blog } = await fetchBlogBySlug(params.slug, token);
 
   if (blog == null) {
     notFound();
