@@ -14,9 +14,14 @@ const headerNavLinks = [
 
 const Header = async () => {
 
-    const session = await getSession();
-    const user = session?.user;
+    let user = null;
 
+    try {
+        const session = await getSession();
+        user = session?.user;
+    } catch (error: any) {
+        console.error(error, "No session found.")
+    }
     return (
         <header className="flex items-center justify-between py-10">
             <div>

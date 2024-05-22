@@ -9,7 +9,6 @@ export async function checkServerStatus(): Promise<boolean> {
         const response = await httpService.get(STATUS_ENDPOINT);
         return response.status === HTTP_STATUS_OK;
     } catch (error) {
-        console.error(error);
         return false;
     }
 }

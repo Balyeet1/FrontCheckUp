@@ -21,7 +21,6 @@ export default function BlogsList({ token }: { token: string }) {
         const getBlogs = async (userToken: string) => {
             const response = await handleAsyncError(async () => get_user_blog_headers(userToken));
             if (!response) {
-                router.push('/api/auth/logout');
                 return;
             }
             const { blogs } = response;

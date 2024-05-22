@@ -1,35 +1,24 @@
-"use client"
-import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { checkServerStatus } from '@/app/lib/db/BackServer_api/api';
+import { getSession } from '@auth0/nextjs-auth0';
+import LogoutUser from './Logout';
 
-const CheckServerStatus: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [isServerDown, setIsServerDown] = useState(false);
 
-    const router = useRouter();
+const CheckServerStatus: React.FC<{ children: React.ReactNode }> = async ({ children }) => {
+    const isServerDown = checkServerStatus();
+    let session = null;
 
-    useEffect(() => {
-        const checkServer = async () => {
-            const server_status = await checkServerStatus();
-            setIsServerDown(!server_status);
+    try {
+        session = await getSession();
+    } catch (error) {
+        console.error(error);
+    }
 
-            if (!server_status) {
-                router.push('/');
-            }
-        };
-
-        checkServer();
-        const intervalId = setInterval(checkServer, 5 * 60 * 1000); // Call every 5 minutes
-
-        return () => clearInterval(intervalId);
-
-    }, []);
-
-    if (isServerDown) {
+    if (!isServerDown) {
         return (
             <div className="flex flex-col justify-center items-center h-screen">
                 <h1>Server is currently down for maintenance</h1>
                 <p>Please try again later.</p>
+                {session && <LogoutUser />}
             </div>
         );
     }
