@@ -1,17 +1,40 @@
-import { getSession, Session } from "@auth0/nextjs-auth0";
+import { NextRequest, NextResponse } from "next/server";
+import { parseCookies } from "nookies";
+import { userExists, createUser } from '@/app/lib/db/BackServer_api/user_api_action';
+import { getSession } from "@auth0/nextjs-auth0";
 
-export async function getUserToken(): Promise<string> {
-    const session: Session | null | undefined = await getSession();
+export async function getUserToken(req: NextRequest): Promise<string> {
 
-    if (!session) {
-        throw new Error("Session not found");
+    const cookies = parseCookies({ req });
+
+    if (cookies.token) {
+        console.log("Token found in cookies");
+        return cookies.token;
     }
 
-    const user = session.user;
+    const response = NextResponse.next(req);
 
-    if (!user?.token) {
-        throw new Error("User token not found");
-    }
+    const session = await getSession();
+    const external = session?.user.sub.split("|")[1];
+    const userToken = await userExists(external) || await createUserAndExists(external, session?.user.name);
 
-    return user.token;
+
+    response.cookies.set('token', userToken ?? "")
+
+    return userToken ?? "";
 }
+
+const createUserAndExists = async (external: string, username: string) => {
+    try {
+        const success = await createUser(external, username);
+        if (!success) {
+            console.log("Failed to create user");
+            throw new Error("Something went wrong");
+        }
+        return await userExists(external);
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
+

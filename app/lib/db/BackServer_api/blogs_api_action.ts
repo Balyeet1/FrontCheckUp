@@ -18,63 +18,41 @@ export async function get_user_blog_headers(user_token: string | unknown): Promi
     return { blogs: data.blogs ?? null }
 }
 
+
 export async function create_user_blog(user_token: string | unknown, blog: FormData): Promise<boolean> {
 
+    const { data } = await httpService.post(blogEndpoints.Create, blog, {
+        headers: getAuthHeaders(user_token, MULTIPART_FORM_DATA)
+    });
 
-    try {
-        const { data } = await httpService.post(blogEndpoints.Create, blog, {
-            headers: getAuthHeaders(user_token, MULTIPART_FORM_DATA)
-        });
-
-        return "blog" in data ? true : false
-
-    } catch (error: any) {
-        console.error(error.response)
-        return false
-    }
-
+    return "blog" in data ? true : false
 }
+
 
 export async function get_user_blog(user_token: string | unknown, blog_id: number): Promise<{ blog: Blog | null }> {
 
+    const { data } = await httpService.get(blogEndpoints.Get(blog_id), {
+        headers: getAuthHeaders(user_token)
+    });
 
-    try {
-        const { data } = await httpService.get(blogEndpoints.Get(blog_id), {
-            headers: getAuthHeaders(user_token)
-        });
-
-
-        return { blog: data.blog ?? null }
-
-    } catch (error: any) {
-        console.error(error.response)
-        return { blog: null }
-    }
-
+    return { blog: data.blog ?? null }
 }
+
 
 export async function delete_user_blog(user_token: string | unknown, blog_id: number): Promise<boolean> {
 
-
-    try {
         const request = await httpService.delete(blogEndpoints.Delete(blog_id), {
             headers: getAuthHeaders(user_token)
         });
 
         return request.status === HTTP_STATUS_OK
-
-    } catch (error: any) {
-        console.log(error.response)
-        return false
-    }
-
 }
+
 
 export async function update_user_blog(user_token: string | unknown, blog_id: number, blog: FormData): Promise<boolean> {
 
     const title: string = blog.get("title")?.toString() ?? "Untitled";
 
-    try {
         const request = await httpService.put(blogEndpoints.Edit(blog_id), blog, {
             headers: getAuthHeaders(user_token, MULTIPART_FORM_DATA)
         });
@@ -83,10 +61,5 @@ export async function update_user_blog(user_token: string | unknown, blog_id: nu
         revalidatePath(`/my-blogs/${createSlug(title, blog_id.toString())}/edit`)
 
         return request.status === HTTP_STATUS_OK
-
-    } catch (error: any) {
-        console.error(error.response)
-        return false
-    }
 
 }

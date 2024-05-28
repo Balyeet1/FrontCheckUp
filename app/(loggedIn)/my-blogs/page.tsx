@@ -1,17 +1,16 @@
 import { Metadata } from 'next';
 import BlogsList from '@/app/components/blog/blogs_list';
-import { getSession } from '@auth0/nextjs-auth0';
+import { getUserToken } from "@/app/lib/utils/session_utils";
 import Link from 'next/link';
+import { NextRequest, NextResponse } from 'next/server';
 
 export const metadata: Metadata = {
   title: 'My Blogs',
 };
 
-export default async function Home({ req }: { req: any }) {
-  const session = await getSession();
-  const user = session?.user;
+export default async function Home({ req }: { req: NextRequest }) {
 
-  const token = typeof user?.token === 'string' ? user?.token : "";
+  const token = await getUserToken(req);
 
   return (
     <section>
@@ -20,6 +19,6 @@ export default async function Home({ req }: { req: any }) {
         <Link href={"/my-blogs/create"} className='text-blue-800'> Cretate Blog</Link>
       </h1>
       <BlogsList token={token} />
-    </section>
+    </section >
   );
 }

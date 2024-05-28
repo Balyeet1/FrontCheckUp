@@ -1,18 +1,15 @@
 import BlogContent from "@/app/components/blog/blog_content";
 import { Metadata } from "next";
-import { getSession } from "@auth0/nextjs-auth0";
-
-
+import { getUserToken } from "@/app/lib/utils/session_utils";
+import { NextRequest } from "next/server";
 
 export const metadata: Metadata = {
   title: 'Create Blog',
 }
 
 export default async function Home() {
-  const session = await getSession();
-  const user = session?.user;
 
-  const token: string = typeof user?.token === 'string' ? user?.token : "";
+  const token = "" 
 
   return (
     <>
