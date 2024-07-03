@@ -1,5 +1,5 @@
 import Link from "next/link"
-import siteMetadata from '@/data/siteMetadata'
+import siteMetadata from '@/app/data/siteMetadata'
 import SearchButton from "./SearchButton"
 import MobileNav from "./MobileNav"
 import { space_Grotesk } from "@/app/components/fonts"

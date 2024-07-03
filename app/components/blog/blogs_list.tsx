@@ -28,7 +28,7 @@ export default function BlogsList({ token }: { token: string }) {
         <>
             {data &&
                 <div className='grid sm:grid-cols-1 md:grid-cols-3 gap-8'>
-                    {data.blogs.length > 0 ? (
+                    {data.blogs && data.blogs.length > 0 ? (
                         data.blogs.map((blog: { title: string; image: string; id: number }) => (
                             <Link
                                 key={blog.id}

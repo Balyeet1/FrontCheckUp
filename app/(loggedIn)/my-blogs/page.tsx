@@ -2,15 +2,14 @@ import { Metadata } from 'next';
 import BlogsList from '@/app/components/blog/blogs_list';
 import { getUserToken } from "@/app/lib/utils/session_utils";
 import Link from 'next/link';
-import { NextRequest, NextResponse } from 'next/server';
 
 export const metadata: Metadata = {
   title: 'My Blogs',
 };
 
-export default async function Home({ req }: { req: NextRequest }) {
+export default async function Home() {
 
-  const token = await getUserToken(req);
+  const token = await getUserToken();
 
   return (
     <section>

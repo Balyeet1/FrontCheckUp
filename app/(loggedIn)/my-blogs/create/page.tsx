@@ -1,7 +1,6 @@
 import BlogContent from "@/app/components/blog/blog_content";
 import { Metadata } from "next";
 import { getUserToken } from "@/app/lib/utils/session_utils";
-import { NextRequest } from "next/server";
 
 export const metadata: Metadata = {
   title: 'Create Blog',
@@ -9,7 +8,7 @@ export const metadata: Metadata = {
 
 export default async function Home() {
 
-  const token = "" 
+  const token = await getUserToken()
 
   return (
     <>

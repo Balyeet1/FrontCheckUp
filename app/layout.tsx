@@ -1,5 +1,5 @@
 import "@/app/globals.css";
-import siteMetadata from "@/data/siteMetadata";
+import siteMetadata from "@/app/data/siteMetadata";
 import { inter } from "@/app/components/fonts";
 import { Providers } from "@/app/providers";
 import CheckServerStatus from "@/app/components/CheckServerStatus";
