@@ -18,11 +18,12 @@
   --white: #FFF;
   --black: #2E2B29;
   --black-contrast: #110F0E;
-  --gray-1: rgba(61, 37, 20, .05);
+  --gray-1: rgba(138, 130, 124, 0.05);
   --gray-2: rgba(61, 37, 20, .08);
   --gray-3: rgba(61, 37, 20, .12);
   --gray-4: rgba(53, 38, 28, .3);
   --gray-5: rgba(28, 25, 23, .6);
+  --gray-witter: rgba(99, 94, 91, 0.6);
   --green: #22C55E;
   --purple: #6A00F5;
   --purple-contrast: #5800CC;
@@ -140,7 +141,7 @@ body {
 
   /* Placeholder (at the top) */
   h1.is-empty:first-child::before {
-    color: var(--gray-4);
+    color: var(--gray-witter);
     content: attr(data-placeholder);
     height: 0;
     pointer-events: none;

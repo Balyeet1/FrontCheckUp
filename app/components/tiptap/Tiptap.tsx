@@ -27,9 +27,12 @@ import { Color } from '@tiptap/extension-color'
 
 const Tiptap = ({ className, content, onChange, isReadonly }: { className?: string, content?: string, onChange?: any, isReadonly: boolean }) => {
 
+    const CustomDocument = Document.extend({
+        content: 'heading block*',
+    })
+
     const lowlight = createLowlight()
     lowlight.register("js", js)
-
 
     const editor = useEditor({
         editable: !isReadonly,
@@ -37,7 +40,7 @@ const Tiptap = ({ className, content, onChange, isReadonly }: { className?: stri
         onUpdate: ({ editor }) => onChange(editor.getHTML()),
         extensions: [
             // Core Extensions
-            SmilieReplacer, TextStyle, FontSize, Document, Paragraph, Text, OrderedList, BulletList, Heading, Bold, Italic, Strike, Underline, ListItem, History, Color,
+            SmilieReplacer, TextStyle, FontSize, CustomDocument, Paragraph, Text, OrderedList, BulletList, Heading, Bold, Italic, Strike, Underline, ListItem, History, Color,
 
             // Extensions with configs
 
@@ -93,7 +96,7 @@ const Toolbar = ({ editor }: { editor: Editor }) => {
 
 
     return (
-        <div className="flex justify-between border border-white mb-5 cols-3 grid grid-cols-8 gap-2 sticky top-0 z-10 bg-white items-center">
+        <div className="flex justify-between border border-white mb-5 cols-3 grid grid-cols-8 gap-2 sticky top-0 z-10 items-center">
             <button onClick={addImage}>Add image</button>
             <select
                 className='is-active'

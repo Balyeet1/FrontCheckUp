@@ -3,8 +3,7 @@ import { update_user_blog, create_user_blog } from '@/app/lib/db/BackServer_api/
 import { Blog } from '@/app/lib/db/models/definitions';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import Tiptap from "@/app/components/tiptap/Tiptap";
 
 const BlogContent = ({ token, blog }: { token: string, blog?: Blog }) => {
     const router = useRouter()
@@ -30,10 +29,6 @@ const BlogContent = ({ token, blog }: { token: string, blog?: Blog }) => {
 
     const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setTitle(event.target.value);
-    };
-
-    const handleContentChange = (value: string) => {
-        setContent(value);
     };
 
     const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -101,7 +96,7 @@ const BlogContent = ({ token, blog }: { token: string, blog?: Blog }) => {
                         </div>
                     </>
                 }
-                {previewMode ?
+                {previewMode &&
                     <>
                         <div className='flex justify-center'>
                             <div className='flex-col align-center'>
@@ -111,7 +106,9 @@ const BlogContent = ({ token, blog }: { token: string, blog?: Blog }) => {
                             </div>
                         </div>
                     </>
-                    : <ReactQuill value={content} onChange={handleContentChange} theme='snow' />}
+                }
+                {previewMode && <Tiptap content={content} className="focus:outline-none" onChange={setContent} isReadonly={true} />}
+                {!previewMode && <Tiptap content={content} className="focus:outline-none" onChange={setContent} isReadonly={false} />}
                 <div className='pt-5'>
                     <button onClick={togglePreviewMode}>{previewMode ? 'Edit' : 'Preview'}</button>
                     {previewMode && <button onClick={createOrUpdateBlog} className='ml-4'>{blog ? 'Update Blog' : 'Create Blog'}</button>}
