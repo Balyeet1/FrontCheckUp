@@ -11,15 +11,13 @@ export default function BlogDisplayer({ blog, slug, token }: { blog: Blog | null
         <>
             {blog && blog.id ?
                 <section>
-                    <div className='flex justify-center'>
-                        <div className='flex-col align-center'>
-                            {blog.content && <Tiptap content={blog.content} className="focus:outline-none" isReadonly={true} />}
+                    <div className='max-w-4xl m-auto'>
+                        {blog.content && <Tiptap content={blog.content} className="focus:outline-none" isReadonly={true} />}
+                        <div className='flex mt-4'>
+                            <BackButton className="mr-2" />
+                            <Link className="mr-2" href={`/my-blogs/${slug}/edit`}>Edit</Link>
+                            <DeleteBlog className="mr-2" token={token} blog_id={blog.id} />
                         </div>
-                    </div>
-                    <div className='flex justify-between'>
-                        <BackButton />
-                        <Link href={`/my-blogs/${slug}/edit`}>Edit</Link>
-                        <DeleteBlog token={token} blog_id={blog.id} />
                     </div>
                 </section>
                 : <div>Blog not found</div>

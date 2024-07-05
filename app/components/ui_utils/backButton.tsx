@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 
-const BackButton = () => {
+const BackButton = ({ className }: { className?: string }) => {
     const router = useRouter();
 
     const handleGoBack = () => {
@@ -10,7 +10,7 @@ const BackButton = () => {
     };
 
     return (
-        <button onClick={handleGoBack}>
+        <button className={className} onClick={handleGoBack}>
             Back
         </button>
     );

@@ -4,28 +4,34 @@ import { Blog } from '@/app/lib/db/models/definitions';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState, useRef } from 'react';
 import Tiptap from "@/app/components/tiptap/Tiptap";
+import { createSlug } from '@/app/lib/utils/utils';
+import { stringify } from 'querystring';
 
 const BlogContent = ({ token, blog }: { token: string, blog?: Blog }) => {
     const router = useRouter()
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
+    const [isFetched, setIsFetched] = useState(false)
     const [media, setMedia] = useState<File | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [mediaUrl, setMediaUrl] = useState<string | null>(null);
     const [previewMode, setPreviewMode] = useState(false);
 
     useEffect(() => {
+        console.log(blog)
         if (blog) {
             setTitle(blog.title);
             setContent(blog.content);
+            setIsFetched(true)
             if (blog.image == null) return;
             fetch(`http://127.0.0.1:6699/checkup_api/blog/download/${blog.image}`).then(response => {
                 response.blob().then(blob => {
                     setMedia(new File([blob], blog.image, { type: blob.type }));
                     setMediaUrl(URL.createObjectURL(blob));
+
                 });
             });
-        }
+        }else setIsFetched(true) 
     }, [blog]);
 
     const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -83,21 +89,23 @@ const BlogContent = ({ token, blog }: { token: string, blog?: Blog }) => {
         if (blog && blog.id) {
             update_user_blog(token, blog.id, formData).then((response) => {
                 if (response) {
-                    router.push('/my-blogs');
+                    const blog_id = blog.id
+                    router.push('/my-blogs/' + createSlug(blog.title, blog_id?.toString()));
                 }
             });
         } else {
-            create_user_blog(token, formData).then((response) => {
-                console.log(response)
+            create_user_blog(token, formData).then((data: any) => {
+                const { response, blog } = data;
+
                 if (response) {
-                    router.push('/my-blogs');
+                    router.push('/my-blogs/' + createSlug(blog.title, blog.id.toString()));
                 }
             });
         }
     };
 
     return (
-        <div className='flex px-8 pt-6 pb-8 mb-4 min-h-screen'>
+        <div className='pt-6 max-w-4xl m-auto'>
             <div className='flex-col w-full mr-2 p-4'>
                 {!previewMode &&
                     <>
@@ -127,8 +135,12 @@ const BlogContent = ({ token, blog }: { token: string, blog?: Blog }) => {
                         </div>
                     </>
                 }
+                {isFetched &&
+                    <>
+                        {!previewMode && <Tiptap content={content} className="focus:outline-none" onChange={setContent} isReadonly={false} />}
+                    </>
+                }
                 {previewMode && <Tiptap content={content} className="focus:outline-none" onChange={setContent} isReadonly={true} />}
-                {!previewMode && <Tiptap content={content} className="focus:outline-none" onChange={setContent} isReadonly={false} />}
                 <div className='pt-5'>
                     <button onClick={togglePreviewMode}>{previewMode ? 'Edit' : 'Preview'}</button>
                     {previewMode && <button onClick={createOrUpdateBlog} className='ml-4'>{blog ? 'Update Blog' : 'Create Blog'}</button>}
