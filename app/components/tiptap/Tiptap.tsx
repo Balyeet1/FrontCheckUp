@@ -71,7 +71,7 @@ const Tiptap = ({ className, content, onChange, isReadonly }: { className?: stri
     return (
         <div>
             {!isReadonly && <Toolbar editor={editor} />}
-            <EditorContent editor={editor} />
+            <EditorContent editor={editor} className='mt-4' />
         </div >
     )
 }

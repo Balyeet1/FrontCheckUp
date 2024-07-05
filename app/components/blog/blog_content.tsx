@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect, useState, useRef } from 'react';
 import Tiptap from "@/app/components/tiptap/Tiptap";
 import { createSlug } from '@/app/lib/utils/utils';
-import { stringify } from 'querystring';
+import { Accordion, AccordionItem } from "@nextui-org/react";
 
 const BlogContent = ({ token, blog }: { token: string, blog?: Blog }) => {
     const router = useRouter()
@@ -31,7 +31,7 @@ const BlogContent = ({ token, blog }: { token: string, blog?: Blog }) => {
 
                 });
             });
-        }else setIsFetched(true) 
+        } else setIsFetched(true)
     }, [blog]);
 
     const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -113,7 +113,7 @@ const BlogContent = ({ token, blog }: { token: string, blog?: Blog }) => {
                         <div className='flex items-end mt-5 mb-5 justify-between'>
 
                             <label htmlFor="fileInput" className='bg-gray-800 p-2.5 border border-gray-300 cursor-pointer rounded-lg'>
-                                {!media ? 'Choose File' : media?.name}
+                                {!media ? 'Thumbnail' : media?.name}
                             </label>
                             <input
                                 type="file"
@@ -127,11 +127,18 @@ const BlogContent = ({ token, blog }: { token: string, blog?: Blog }) => {
                 }
                 {previewMode &&
                     <>
-                        <div className='flex justify-center'>
-                            <div className='flex-col align-center'>
-                                <h1>{title}</h1>
-                                {renderMediaPreview()}
-                            </div>
+                        <Accordion className='border border-gray-200 rounded-lg'>
+                            <AccordionItem key="Thumbnail" aria-label="Thumbnail" title="Thumbnail">
+                                <div className='flex justify-center mb-4'>
+                                    <div className='flex flex-col items-center'>
+                                        <h1>{title}</h1>
+                                        {renderMediaPreview()}
+                                    </div>
+                                </div>
+                            </AccordionItem>
+                        </Accordion>
+                        <div className='pt-4'>
+                            <Tiptap content={content} className="focus:outline-none" onChange={setContent} isReadonly={true} />
                         </div>
                     </>
                 }
@@ -140,7 +147,6 @@ const BlogContent = ({ token, blog }: { token: string, blog?: Blog }) => {
                         {!previewMode && <Tiptap content={content} className="focus:outline-none" onChange={setContent} isReadonly={false} />}
                     </>
                 }
-                {previewMode && <Tiptap content={content} className="focus:outline-none" onChange={setContent} isReadonly={true} />}
                 <div className='pt-5'>
                     <button onClick={togglePreviewMode}>{previewMode ? 'Edit' : 'Preview'}</button>
                     {previewMode && <button onClick={createOrUpdateBlog} className='ml-4'>{blog ? 'Update Blog' : 'Create Blog'}</button>}
