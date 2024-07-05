@@ -14,7 +14,6 @@ const afterCallback = async (req, session, state) => {
 
     session.user.token = userToken;
 
-
     return session;
 };
 

@@ -65,7 +65,6 @@ const Tiptap = ({ className, content, onChange, isReadonly }: { className?: stri
     });
 
     if (!editor) {
-        console.log("Something went wrong with the editor!")
         return null
     }
 

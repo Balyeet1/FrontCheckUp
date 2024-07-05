@@ -2,7 +2,7 @@
 import { update_user_blog, create_user_blog } from '@/app/lib/db/BackServer_api/blogs_api_action';
 import { Blog } from '@/app/lib/db/models/definitions';
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Tiptap from "@/app/components/tiptap/Tiptap";
 
 const BlogContent = ({ token, blog }: { token: string, blog?: Blog }) => {
@@ -10,6 +10,7 @@ const BlogContent = ({ token, blog }: { token: string, blog?: Blog }) => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [media, setMedia] = useState<File | null>(null);
+    const fileInputRef = useRef<HTMLInputElement>(null);
     const [mediaUrl, setMediaUrl] = useState<string | null>(null);
     const [previewMode, setPreviewMode] = useState(false);
 
@@ -27,10 +28,6 @@ const BlogContent = ({ token, blog }: { token: string, blog?: Blog }) => {
         }
     }, [blog]);
 
-    const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setTitle(event.target.value);
-    };
-
     const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files ? event.target.files[0] : null;
         setMedia(file);
@@ -40,13 +37,33 @@ const BlogContent = ({ token, blog }: { token: string, blog?: Blog }) => {
     };
 
     const togglePreviewMode = () => {
+        if (!previewMode) {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(content, 'text/html');
+            const firstElement = doc.body.firstChild;
+
+            const getDirectTextContent = (element: any) => {
+                let text = '';
+                for (const child of element.childNodes) {
+                    if (child.nodeType === Node.TEXT_NODE) {
+                        text += child.textContent;
+                    } else {
+                        text += getDirectTextContent(child); // Recurse for nested elements
+                    }
+                }
+                return text;
+            }
+
+            setTitle(firstElement ? getDirectTextContent(firstElement) : "");
+        }
+
         setPreviewMode(!previewMode);
     };
 
     const renderMediaPreview = () => {
         if (!mediaUrl) return null;
         if (media && media.type.startsWith('image/')) {
-            return <img src={mediaUrl} alt="Preview" />;
+            return <img src={mediaUrl} alt="Preview" className='w-auto h-auto' />;
         } else if (media && media.type.startsWith('video/')) {
             return <video src={mediaUrl} controls />;
         } else if (media && media.type.startsWith('audio/')) {
@@ -86,13 +103,17 @@ const BlogContent = ({ token, blog }: { token: string, blog?: Blog }) => {
                     <>
                         <div className='text-2xl font-bold pb-3'>{blog ? 'Edit Blog' : 'Create Blog'}</div>
                         <div className='flex items-end mt-5 mb-5 justify-between'>
-                            <label>
-                                <h4 className='text-gray-700'>
-                                    Title:
-                                </h4>
-                                <input type="text" value={title} onChange={handleTitleChange} placeholder="Enter title" />
+
+                            <label htmlFor="fileInput" className='bg-gray-800 p-2.5 border border-gray-300 cursor-pointer rounded-lg'>
+                                {!media ? 'Choose File' : media?.name}
                             </label>
-                            <input type="file" onChange={handleFileUpload} />
+                            <input
+                                type="file"
+                                id="fileInput"
+                                ref={fileInputRef}
+                                onChange={handleFileUpload}
+                                style={{ display: 'none' }}
+                            />
                         </div>
                     </>
                 }
@@ -102,7 +123,6 @@ const BlogContent = ({ token, blog }: { token: string, blog?: Blog }) => {
                             <div className='flex-col align-center'>
                                 <h1>{title}</h1>
                                 {renderMediaPreview()}
-                                <div dangerouslySetInnerHTML={{ __html: content }} />
                             </div>
                         </div>
                     </>
