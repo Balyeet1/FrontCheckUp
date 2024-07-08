@@ -95,7 +95,7 @@ const Toolbar = ({ editor }: { editor: Editor }) => {
 
 
     return (
-        <div className="flex justify-between border border-white mb-5 cols-3 grid grid-cols-8 gap-2 sticky top-0 z-10 items-center">
+        <div className="flex justify-between border border-white mb-5 cols-3 grid grid-cols-8 gap-2 sticky top-0 z-10 items-center toolbar">
             <button onClick={addImage}>Add image</button>
             <select
                 className='is-active'

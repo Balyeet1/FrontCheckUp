@@ -44,7 +44,7 @@ const Header = async () => {
                         <Link
                             key={link.title}
                             href={link.href}
-                            className="hidden font-medium text-gray-100 sm:block"
+                            className="hidden font-medium sm:block"
                         >
                             {link.title}
                         </Link>
@@ -52,7 +52,7 @@ const Header = async () => {
                 {user && (<Link href='/my-profile/'>{user.name}</Link>)}
                 {!user && (<Link
                     href="/api/auth/login/"
-                    className="font-medium text-gray-100"
+                    className="font-medium"
                 >
                     Login
                 </Link>)}

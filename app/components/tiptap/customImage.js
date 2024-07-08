@@ -160,7 +160,7 @@ const getImageExtension = (isReadonly) => {
                         value={width}
                         placeholder="Width"
                         onChange={(e) => updateAttributes({ width: e.target.value })}
-                        className="border rounded p-1 text-black w-10"
+                        className="border rounded p-1 text-black w-14"
                     />
 
                     <select value={alignment} onChange={handleAlignmentChange} className="border rounded p-1 text-black">
