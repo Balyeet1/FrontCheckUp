@@ -7,7 +7,6 @@ import { get_user_blog_headers } from '@/app/lib/db/BackServer_api/blogs_api_act
 import useApi from '@/app/lib/customHooks/useApi';
 import HandleApiError from '@/app/components/error/HandleApiError';
 
-
 export default function BlogsList({ token }: { token: string }) {
 
     const { data, error, loading, request: getBlogs } = useApi(get_user_blog_headers);
@@ -27,20 +26,18 @@ export default function BlogsList({ token }: { token: string }) {
     return (
         <>
             {data &&
-                <div className='grid sm:grid-cols-1 md:grid-cols-3 gap-8'>
+                <div className='grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8'>
                     {data.blogs && data.blogs.length > 0 ? (
                         data.blogs.map((blog: { title: string; image: string; id: number }) => (
                             <Link
                                 key={blog.id}
-                                className='flex items-center flex-wrap flex-col space-y-1 mb-4 justify-center p-4 bg-white dark:bg-neutral-800 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg hover:scale-1.0'
+                                className='flex flex-wrap flex-col items-center space-y-1 mb-4 p-4 bg-white dark:bg-neutral-800 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg hover:scale-1.0'
                                 href={`/my-blogs/${createSlug(blog.title, blog.id.toString())}`}
                             >
-                                <div className='w-full flex flex-col'>
-                                    <p className='text-neutral-900 dark:text-neutral-100 tracking-tight'>{blog.title}</p>
-                                    <Suspense fallback={<p className='h-6'>Loading</p>}>
-                                        {blog.image && <RenderImage src={blog.image} alt={blog.title} />}
-                                    </Suspense>
-                                </div>
+                                <h1 className='text-neutral-900 dark:text-neutral-100 tracking-tight'>{blog.title}</h1>
+                                <Suspense fallback={<p className='h-6'>Loading</p>}>
+                                    {blog.image && <RenderImage src={blog.image} alt={blog.title} />}
+                                </Suspense>
                             </Link>
                         ))
                     ) : (
@@ -59,8 +56,14 @@ export default function BlogsList({ token }: { token: string }) {
 
 function RenderImage({ src, alt }: { src: string; alt: string }) {
     return (
-        <div className='flex w-full h-full'>
-            <Image width={400} height={400} src={`http://127.0.0.1:6699/checkup_api/blog/images/${src}`} alt={alt} priority={true} />
+        <div className='h-60'>
+            <Image
+                width={200}
+                height={300}
+                src={`http://127.0.0.1:6699/checkup_api/blog/images/${src}`}
+                alt={alt}
+                className="object-cover w-full h-full rounded-md"
+                priority={true} />
         </div>
     );
 }

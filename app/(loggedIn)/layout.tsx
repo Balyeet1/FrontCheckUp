@@ -13,7 +13,7 @@ export default function LogedInLayout({
     const { user } = useUser()
 
     return (
-        <section className="mx-auto sm:px-6 xl:px-8">
+        <section className="mx-auto p-3 sm:px-6 xl:px-8">
             <div className="flex mr-4 pt-5 items-center justify-end">
                 <Dropdown placement="bottom-start">
                     <DropdownTrigger>

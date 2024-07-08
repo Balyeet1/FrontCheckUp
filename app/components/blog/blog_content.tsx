@@ -69,7 +69,7 @@ const BlogContent = ({ token, blog }: { token: string, blog?: Blog }) => {
     const renderMediaPreview = () => {
         if (!mediaUrl) return null;
         if (media && media.type.startsWith('image/')) {
-            return <img src={mediaUrl} alt="Preview" className='w-auto h-auto' />;
+            return <img src={mediaUrl} alt="Preview" className='w-auto h-auto rounded-md object-cover' />;
         } else if (media && media.type.startsWith('video/')) {
             return <video src={mediaUrl} controls />;
         } else if (media && media.type.startsWith('audio/')) {
@@ -129,10 +129,14 @@ const BlogContent = ({ token, blog }: { token: string, blog?: Blog }) => {
                     <>
                         <Accordion className='border border-gray-200 rounded-lg'>
                             <AccordionItem key="Thumbnail" aria-label="Thumbnail" title="Thumbnail">
-                                <div className='flex justify-center mb-4'>
-                                    <div className='flex flex-col items-center'>
-                                        <h1>{title}</h1>
-                                        {renderMediaPreview()}
+                                <div className='flex justify-center'>
+                                    <div
+                                        className='flex flex-wrap flex-col items-center space-y-1 mb-4 max-w-100 justify-center p-4 bg-white dark:bg-neutral-800 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg hover:scale-1.0'
+                                    >
+                                        <h1 className='text-neutral-900 dark:text-neutral-100 tracking-tight'>{title}</h1>
+                                        <div>
+                                            {renderMediaPreview()}
+                                        </div>
                                     </div>
                                 </div>
                             </AccordionItem>
