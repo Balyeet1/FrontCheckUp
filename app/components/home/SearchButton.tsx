@@ -6,10 +6,10 @@ const SearchButton = () => {
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
-                viewBox="0 0 24 24"
+                viewBox="0 0 26 26"
                 strokeWidth={1.5}
                 stroke="currentColor"
-                className="h-6 w-6 text-gray-100"
+                className="h-6 w-6 text-gray-800"
             >
                 <path
                     strokeLinecap="round"

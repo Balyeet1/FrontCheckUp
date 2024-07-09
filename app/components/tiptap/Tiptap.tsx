@@ -36,7 +36,7 @@ const Tiptap = ({ className, content, onChange, isReadonly }: { className?: stri
 
     const editor = useEditor({
         editable: !isReadonly,
-        editorProps: { attributes: { class: className || "" } },
+        editorProps: { attributes: { class: className + " w-full table" || "w-full table" } },
         onUpdate: ({ editor }) => onChange(editor.getHTML()),
         extensions: [
             // Core Extensions
@@ -71,7 +71,7 @@ const Tiptap = ({ className, content, onChange, isReadonly }: { className?: stri
     return (
         <div>
             {!isReadonly && <Toolbar editor={editor} />}
-            <EditorContent editor={editor} className='mt-4' />
+            <EditorContent editor={editor} className='mt-4 mb-4' />
         </div >
     )
 }

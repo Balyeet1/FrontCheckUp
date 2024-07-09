@@ -87,10 +87,10 @@ const BlogContent = ({ token, blog }: { token: string, blog?: Blog }) => {
         }
 
         if (blog && blog.id) {
-            update_user_blog(token, blog.id, formData).then((response) => {
+            update_user_blog(token, blog.id, formData).then((data: any) => {
+                const { response, blog } = data;
                 if (response) {
-                    const blog_id = blog.id
-                    router.push('/my-blogs/' + createSlug(blog.title, blog_id?.toString()));
+                    router.push('/my-blogs/' + createSlug(blog.title, blog.id?.toString()));
                 }
             });
         } else {
@@ -112,7 +112,7 @@ const BlogContent = ({ token, blog }: { token: string, blog?: Blog }) => {
                         <div className='text-2xl font-bold pb-3'>{blog ? 'Edit Blog' : 'Create Blog'}</div>
                         <div className='flex items-end mt-5 mb-5 justify-between'>
 
-                            <label htmlFor="fileInput" className='bg-gray-800 p-2.5 border border-gray-300 cursor-pointer rounded-lg'>
+                            <label htmlFor="fileInput" className='bg-gray-100 p-2.5 border border-gray-300 cursor-pointer rounded-lg'>
                                 {!media ? 'Thumbnail' : media?.name}
                             </label>
                             <input

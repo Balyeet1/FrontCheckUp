@@ -6,6 +6,7 @@ import { createSlug } from '@/app/lib/utils/utils';
 import { get_user_blog_headers } from '@/app/lib/db/BackServer_api/blogs_api_action';
 import useApi from '@/app/lib/customHooks/useApi';
 import HandleApiError from '@/app/components/error/HandleApiError';
+import { useState } from 'react';
 
 export default function BlogsList({ token }: { token: string }) {
 
@@ -26,12 +27,12 @@ export default function BlogsList({ token }: { token: string }) {
     return (
         <>
             {data &&
-                <div className='grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8'>
+                <div className='grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6'>
                     {data.blogs && data.blogs.length > 0 ? (
                         data.blogs.map((blog: { title: string; image: string; id: number }) => (
                             <Link
                                 key={blog.id}
-                                className='flex flex-wrap flex-col items-center space-y-1 mb-4 p-4 bg-white dark:bg-neutral-800 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg hover:scale-1.0'
+                                className='flex flex-wrap flex-col items-center space-y-1 md:mb-4 p-4 bg-white dark:bg-neutral-800 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg hover:scale-1.0'
                                 href={`/my-blogs/${createSlug(blog.title, blog.id.toString())}`}
                             >
                                 <strong>
@@ -57,15 +58,31 @@ export default function BlogsList({ token }: { token: string }) {
 }
 
 function RenderImage({ src, alt }: { src: string; alt: string }) {
+
+    const [foundImage, setFoundImage] = useState(true);
+
     return (
         <div className='h-60'>
-            <Image
+            {foundImage && <Image
                 width={200}
                 height={300}
                 src={`http://127.0.0.1:6699/checkup_api/blog/images/${src}`}
                 alt={alt}
+                onError={() => {
+                    setFoundImage(false)
+                }}
                 className="object-cover w-full h-full rounded-md"
-                priority={true} />
+                priority={true}
+            />}
+
+            {!foundImage && <Image
+                width={200}
+                height={300}
+                src={`http://127.0.0.1:6699/checkup_api/blog/images/image_not_found.png`}
+                alt={alt}
+                className="object-cover w-full h-full rounded-md"
+                priority={true}
+            />}
         </div>
     );
 }

@@ -25,7 +25,7 @@ export async function create_user_blog(user_token: string | unknown, blog: FormD
         headers: getAuthHeaders(user_token, MULTIPART_FORM_DATA)
     });
 
-    return { response: "blog" in data ? true : false, blog: "blog" in data ? data.blog[0] : null}
+    return { response: "blog" in data ? true : false, blog: "blog" in data ? data.blog[0] : null }
 }
 
 
@@ -49,7 +49,7 @@ export async function delete_user_blog(user_token: string | unknown, blog_id: nu
 }
 
 
-export async function update_user_blog(user_token: string | unknown, blog_id: number, blog: FormData): Promise<boolean> {
+export async function update_user_blog(user_token: string | unknown, blog_id: number, blog: FormData): Promise<object> {
 
     const title: string = blog.get("title")?.toString() ?? "Untitled";
 
@@ -60,6 +60,12 @@ export async function update_user_blog(user_token: string | unknown, blog_id: nu
     revalidatePath(`/my-blogs/${createSlug(title, blog_id.toString())}`)
     revalidatePath(`/my-blogs/${createSlug(title, blog_id.toString())}/edit`)
 
-    return request.status === HTTP_STATUS_OK
+    let edite_blog = {};
+
+    if ("blog" in request.data) {
+        edite_blog = request.data.blog
+    }
+
+    return { response: request.status === HTTP_STATUS_OK, blog:edite_blog }
 
 }
