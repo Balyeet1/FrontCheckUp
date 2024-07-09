@@ -59,30 +59,16 @@ export default function BlogsList({ token }: { token: string }) {
 
 function RenderImage({ src, alt }: { src: string; alt: string }) {
 
-    const [foundImage, setFoundImage] = useState(true);
-
     return (
         <div className='h-60'>
-            {foundImage && <Image
+            <Image
                 width={200}
                 height={300}
                 src={`http://127.0.0.1:6699/checkup_api/blog/images/${src}`}
                 alt={alt}
-                onError={() => {
-                    setFoundImage(false)
-                }}
                 className="object-cover w-full h-full rounded-md"
                 priority={true}
-            />}
-
-            {!foundImage && <Image
-                width={200}
-                height={300}
-                src={`http://127.0.0.1:6699/checkup_api/blog/images/image_not_found.png`}
-                alt={alt}
-                className="object-cover w-full h-full rounded-md"
-                priority={true}
-            />}
+            />
         </div>
     );
 }

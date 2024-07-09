@@ -12,7 +12,7 @@ export default async function Home() {
   const token = await getUserToken();
 
   return (
-    <section>
+    <section className='pt-4'>
       <h1 className="font-medium text-2xl mb-8 tracking-tighter">
         My blogs
         <Link href={"/my-blogs/create"} className='text-blue-800'> Cretate Blog</Link>

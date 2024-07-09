@@ -49,7 +49,7 @@ const Header = async () => {
                             {link.title}
                         </Link>
                     ))}
-                {user && (<Link href='/my-profile/'>{user.name}</Link>)}
+                {user && (<Link className="font-medium" href='/my-profile/'>{user.name}</Link>)}
                 {!user && (<Link
                     href="/api/auth/login/"
                     className="font-medium"

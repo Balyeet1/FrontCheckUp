@@ -27,7 +27,7 @@ const MobileNav: React.FC<{ headerNavLinks: HeaderNavLinksType[] }> = ({ headerN
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 20 20"
                     fill="currentColor"
-                    className="h-8 w-8 text-gray-100"
+                    className="h-8 w-8 text-gray-700"
                 >
                     <path
                         fillRule="evenodd"
@@ -37,7 +37,7 @@ const MobileNav: React.FC<{ headerNavLinks: HeaderNavLinksType[] }> = ({ headerN
                 </svg>
             </button>
             <div
-                className={`fixed left-0 top-0 z-10 h-full w-full transform  opacity-95 duration-300 ease-in-out bg-gray-950 opacity-[0.98] ${navShow ? 'translate-x-0' : 'translate-x-full'
+                className={`fixed left-0 top-0 z-10 h-full w-full transform  opacity-95 duration-300 ease-in-out bg-gray-200 opacity-[0.98] ${navShow ? 'translate-x-0' : 'translate-x-full'
                     }`}
             >
                 <div className="flex justify-end">
@@ -61,7 +61,7 @@ const MobileNav: React.FC<{ headerNavLinks: HeaderNavLinksType[] }> = ({ headerN
                         <div key={link.title} className="px-12 py-4">
                             <Link
                                 href={link.href}
-                                className="text-2xl font-bold tracking-widest text-gray-100"
+                                className="text-2xl font-bold tracking-widest"
                                 onClick={onToggleNav}
                             >
                                 {link.title}

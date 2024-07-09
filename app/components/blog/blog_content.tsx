@@ -18,7 +18,6 @@ const BlogContent = ({ token, blog }: { token: string, blog?: Blog }) => {
     const [previewMode, setPreviewMode] = useState(false);
 
     useEffect(() => {
-        console.log(blog)
         if (blog) {
             setTitle(blog.title);
             setContent(blog.content);
@@ -69,6 +68,7 @@ const BlogContent = ({ token, blog }: { token: string, blog?: Blog }) => {
     const renderMediaPreview = () => {
         if (!mediaUrl) return null;
         if (media && media.type.startsWith('image/')) {
+            console.log("ola")
             return <img src={mediaUrl} alt="Preview" className='w-auto h-60 rounded-md object-cover' />;
         } else if (media && media.type.startsWith('video/')) {
             return <video src={mediaUrl} controls />;
