@@ -4,7 +4,7 @@ import { createUser, userExists } from '../../lib/db/BackServer_api/user_api_act
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-function SetUpPage({ req, res }: { req: any, res: any }) {
+function SetUpPage() {
   const { user, isLoading } = useUser()
   const token = user?.token;
   const router = useRouter()
@@ -27,7 +27,7 @@ function SetUpPage({ req, res }: { req: any, res: any }) {
       setError(true)
 
       return
-    } 
+    }
 
     const get_user_token = async () => {
 
@@ -43,7 +43,7 @@ function SetUpPage({ req, res }: { req: any, res: any }) {
 
     get_user_token()
 
-  }, []);
+  }, [external, username, router]);
 
   return (
     <>

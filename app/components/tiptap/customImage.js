@@ -3,6 +3,7 @@ import { ReactNodeViewRenderer } from '@tiptap/react'
 import { NodeViewWrapper } from '@tiptap/react'
 import { useState, useRef, useEffect } from "react";
 import clsx from 'clsx';
+import Image from 'next/image';
 
 
 const getImageExtension = (isReadonly) => {
@@ -104,12 +105,14 @@ const getImageExtension = (isReadonly) => {
                             }
                         )}
                     >
-                        <img
+                        <Image
                             src={src}
-                            alt={alt}
+                            alt={alt ? alt : "Image"}
                             title={title}
                             onClick={handleImageClick}
                             ref={imageRef}
+                            width={1600}
+                            height={900}
                             className={
                                 !editable ? "block w-full"
                                     : clsx(

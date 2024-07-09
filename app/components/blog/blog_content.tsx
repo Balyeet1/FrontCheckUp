@@ -6,6 +6,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import Tiptap from "@/app/components/tiptap/Tiptap";
 import { createSlug } from '@/app/lib/utils/utils';
 import { Accordion, AccordionItem } from "@nextui-org/react";
+import Image from 'next/image';
 
 const BlogContent = ({ token, blog }: { token: string, blog?: Blog }) => {
     const router = useRouter()
@@ -68,8 +69,7 @@ const BlogContent = ({ token, blog }: { token: string, blog?: Blog }) => {
     const renderMediaPreview = () => {
         if (!mediaUrl) return null;
         if (media && media.type.startsWith('image/')) {
-            console.log("ola")
-            return <img src={mediaUrl} alt="Preview" className='w-auto h-60 rounded-md object-cover' />;
+            return <Image src={mediaUrl} alt="Preview" width={800} height={500} className='w-auto h-60 rounded-md object-cover' />;
         } else if (media && media.type.startsWith('video/')) {
             return <video src={mediaUrl} controls />;
         } else if (media && media.type.startsWith('audio/')) {

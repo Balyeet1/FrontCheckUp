@@ -1,4 +1,5 @@
 import { getSession } from '@auth0/nextjs-auth0';
+import Image from 'next/image';
 
 
 export default async function ProfileServer() {
@@ -8,7 +9,7 @@ export default async function ProfileServer() {
   return (
     user && (
       <div className='flex pt-5'>
-        <img src={user.picture} alt={user.name} />
+        <Image src={user.picture} alt={user.name} width={75} height={75} className='w-auto h-auto'/>
         <h2>{user.name}</h2>
         <p>{user.email}</p>
       </div>

@@ -6,7 +6,6 @@ import { createSlug } from '@/app/lib/utils/utils';
 import { get_user_blog_headers } from '@/app/lib/db/BackServer_api/blogs_api_action';
 import useApi from '@/app/lib/customHooks/useApi';
 import HandleApiError from '@/app/components/error/HandleApiError';
-import { useState } from 'react';
 
 export default function BlogsList({ token }: { token: string }) {
 
@@ -14,7 +13,7 @@ export default function BlogsList({ token }: { token: string }) {
 
     useEffect(() => {
         getBlogs(token);
-    }, [token]);
+    }, []);
 
     if (error) {
         return <HandleApiError errorMessage={error} />;
