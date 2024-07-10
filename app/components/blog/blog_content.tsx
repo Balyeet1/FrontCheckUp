@@ -7,6 +7,7 @@ import Tiptap from "@/app/components/tiptap/Tiptap";
 import { createSlug } from '@/app/lib/utils/utils';
 import { Accordion, AccordionItem } from "@nextui-org/react";
 import Image from 'next/image';
+import { Button } from '@nextui-org/react';
 
 const BlogContent = ({ token, blog }: { token: string, blog?: Blog }) => {
     const router = useRouter()
@@ -112,7 +113,7 @@ const BlogContent = ({ token, blog }: { token: string, blog?: Blog }) => {
                         <div className='text-2xl font-bold pb-3'>{blog ? 'Edit Blog' : 'Create Blog'}</div>
                         <div className='flex items-end mt-5 mb-5 justify-between'>
 
-                            <label htmlFor="fileInput" className='bg-gray-100 p-2.5 border border-gray-300 cursor-pointer rounded-lg'>
+                            <label htmlFor="fileInput" className='bg-gray-100 p-2.5 border-2 border-sky-300 cursor-pointer rounded-lg'>
                                 {!media ? 'Thumbnail' : media?.name}
                             </label>
                             <input
@@ -154,8 +155,8 @@ const BlogContent = ({ token, blog }: { token: string, blog?: Blog }) => {
                     </>
                 }
                 <div className='pt-5'>
-                    <button onClick={togglePreviewMode}>{previewMode ? 'Edit' : 'Preview'}</button>
-                    {previewMode && <button onClick={createOrUpdateBlog} className='ml-4'>{blog ? 'Update Blog' : 'Create Blog'}</button>}
+                    <Button className="bg-sky-300 hover:bg-sky-400 mr-3" onClick={togglePreviewMode}>{previewMode ? 'Edit' : 'Preview'}</Button>
+                    {previewMode && <Button className='bg-success-400 houver:bg-success-200' onClick={createOrUpdateBlog}>{blog ? 'Update Blog' : 'Create Blog'}</Button>}
                 </div>
             </div>
         </div>

@@ -1,5 +1,4 @@
 'use client'
-
 import React, { useState } from 'react'
 import Link from 'next/link'
 
@@ -46,7 +45,7 @@ const MobileNav: React.FC<{ headerNavLinks: HeaderNavLinksType[] }> = ({ headerN
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 20 20"
                             fill="currentColor"
-                            className="text-gray-100"
+                            className="text-gray-700"
                         >
                             <path
                                 fillRule="evenodd"
