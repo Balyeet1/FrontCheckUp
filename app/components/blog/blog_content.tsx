@@ -106,7 +106,7 @@ const BlogContent = ({ token, blog }: { token: string, blog?: Blog }) => {
     };
 
     return (
-        <div className='pt-6 max-w-4xl m-auto'>
+        <div className='pt-6 max-w-2xl m-auto'>
             <div className='flex-col w-full mr-2 p-4'>
                 {!previewMode &&
                     <>

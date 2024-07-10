@@ -2,7 +2,6 @@
 import Tiptap from "@/app/components/tiptap/Tiptap";
 import BackButton from '@/app/components/ui_utils/backButton'
 import DeleteBlog from '@/app/components/blog/delete_blog'
-import Link from 'next/link'
 import { Blog } from '@/app/lib/db/models/definitions'
 import { Button } from "@nextui-org/react";
 import { useRouter } from 'next/navigation';
@@ -14,7 +13,7 @@ export default function BlogDisplayer({ blog, slug, token }: { blog: Blog | null
         <>
             {blog && blog.id ?
                 <section>
-                    <div className='max-w-4xl m-auto'>
+                    <div className='max-w-2xl m-auto'>
                         {blog.content && <Tiptap content={blog.content} className="focus:outline-none" isReadonly={true} />}
                         <div className='flex mt-8'>
                             <BackButton nextui className="mr-4" />

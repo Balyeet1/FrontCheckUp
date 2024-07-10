@@ -122,6 +122,13 @@ const Toolbar = ({ editor }: { editor: Editor }) => {
                 H3
             </button>
             <button
+                onClick={() => editor.chain().focus().setColor("#000000").run()}
+                className={editor.isActive('textStyle', { color: '#000000' }) ? 'is-active' : ''}
+                data-testid="setBlack"
+            >
+               Black 
+            </button>
+            <button
                 onClick={() => editor.chain().focus().setColor('#F98181').run()}
                 className={editor.isActive('textStyle', { color: '#F98181' }) ? 'is-active' : ''}
                 data-testid="setRed"
@@ -203,17 +210,19 @@ const Toolbar = ({ editor }: { editor: Editor }) => {
 
             <select
                 className='is-active'
-                onChange={(e) => editor.chain().focus().setFontSize(e.target.value).run()}
-                value={editor.isActive('textStyle') ? editor.getAttributes('textStyle').fontSize : '16pt'} // Default to 16pt if not active
+                onChange={(e) => {
+                    editor.chain().focus().setFontSize(e.target.value).run()
+                }}
+                value={editor.isActive('textStyle') ? editor.getAttributes('textStyle').fontSize : '1rem'} // Default to 16pt if not active
             >
-                <option value="10pt">10pt</option>
-                <option value="12pt">12pt</option>
-                <option value="14pt">14pt</option>
-                <option value="16pt">16pt</option>
-                <option value="18pt">18pt</option>
-                <option value="20pt">20pt</option>
-                <option value="22pt">22pt</option>
-                <option value="24pt">24pt</option>
+                <option value="0.6rem">10pt</option>
+                <option value="0.8rem">12pt</option>
+                <option value="1rem">14pt</option>
+                <option value="1.2rem">16pt</option>
+                <option value="1.4rem">18pt</option>
+                <option value="1.6rem">20pt</option>
+                <option value="1.8rem">22pt</option>
+                <option value="2rem">24pt</option>
             </select>
             <button
                 onClick={() => editor.chain().focus().toggleBulletList().run()}

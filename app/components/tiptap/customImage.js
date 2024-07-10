@@ -4,6 +4,8 @@ import { NodeViewWrapper } from '@tiptap/react'
 import { useState, useRef, useEffect } from "react";
 import clsx from 'clsx';
 import Image from 'next/image';
+import { Suspense } from 'react';
+import ImageLoadingFallback from '@/app/components/ui_utils/ImageFallback'
 
 
 const getImageExtension = (isReadonly) => {
@@ -105,31 +107,33 @@ const getImageExtension = (isReadonly) => {
                             }
                         )}
                     >
-                        <Image
-                            src={src}
-                            alt={alt ? alt : "Image"}
-                            title={title}
-                            onClick={handleImageClick}
-                            ref={imageRef}
-                            width={1600}
-                            height={900}
-                            className={
-                                !editable ? "block w-full"
-                                    : clsx(
-                                        'hover:border-3',
-                                        'hover:border-blue-500',
-                                        'block w-full',
-                                        {
-                                            'border-blue-500 border-3': showMenu
-                                        }
-                                    )}
-                        />
-                        <ImageMenu
-                            node={node}
-                            updateAttributes={updateAttributes}
-                            showMenu={showMenu}
-                            menuRef={menuRef}
-                        />
+                        <Suspense fallback={<ImageLoadingFallback />}>
+                            <Image
+                                src={src}
+                                alt={alt ? alt : "Image"}
+                                title={title}
+                                onClick={handleImageClick}
+                                ref={imageRef}
+                                width={1600}
+                                height={900}
+                                className={
+                                    !editable ? "block w-full"
+                                        : clsx(
+                                            'hover:border-3',
+                                            'hover:border-blue-500',
+                                            'block w-full',
+                                            {
+                                                'border-blue-500 border-3': showMenu
+                                            }
+                                        )}
+                            />
+                            <ImageMenu
+                                node={node}
+                                updateAttributes={updateAttributes}
+                                showMenu={showMenu}
+                                menuRef={menuRef}
+                            />
+                        </Suspense>
 
                     </NodeViewWrapper >
                 )
