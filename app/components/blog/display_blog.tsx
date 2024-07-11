@@ -13,7 +13,7 @@ export default function BlogDisplayer({ blog, slug, token }: { blog: Blog | null
         <>
             {blog && blog.id ?
                 <section>
-                    <div className='max-w-2xl m-auto'>
+                    <div className='max-w-2xl m-auto p-1'>
                         {blog.content && <Tiptap content={blog.content} className="focus:outline-none" isReadonly={true} />}
                         <div className='flex mt-8'>
                             <BackButton nextui className="mr-4" />

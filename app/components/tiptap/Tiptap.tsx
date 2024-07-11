@@ -24,6 +24,9 @@ import Underline from '@tiptap/extension-underline'
 import ListItem from '@tiptap/extension-list-item';
 import History from '@tiptap/extension-history'
 import { Color } from '@tiptap/extension-color'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBold, faHeading, faItalic, faStrikethrough, faUnderline, faCode, faList, faList12, faImage, faFont, faHighlighter, faAlignCenter, faAlignLeft, faAlignRight, faPalette, faEraser } from '@fortawesome/free-solid-svg-icons';
+import Dropdown from '@/app/components/ui_utils/GenericDroppdown';
 
 const Tiptap = ({ className, content, onChange, isReadonly }: { className?: string, content?: string, onChange?: any, isReadonly: boolean }) => {
 
@@ -79,6 +82,37 @@ const Tiptap = ({ className, content, onChange, isReadonly }: { className?: stri
 
 const Toolbar = ({ editor }: { editor: Editor }) => {
 
+    const itemsHeader = [
+        { label: "H1", value: 1, },
+        { label: "H2", value: 2 },
+        { label: "H3", value: 3 },
+    ]
+
+    const itemsFontColor = [
+        { label: "Red", value: "#FF0000", },
+        { label: "Blue", value: "#0000FF" },
+        { label: "Yellow", value: "#FFFF00" },
+        { label: "Lime", value: "#00FF00" },
+        { label: "Green", value: "#008000" },
+        { label: "Cyan", value: "#00FFFF" },
+        { label: "Black", value: "#000000", icon: <FontAwesomeIcon icon={faEraser} /> },
+    ]
+
+    const itemsFontFamily = [
+        { label: "Arial", value: "arial" },
+        { label: "Monospace", value: "monospace" },
+        { label: "Serif", value: "serif" },
+        { label: "Comic", value: "Comic Sans MS, Comic Sans" },
+        { label: "Inter", value: "inter" },
+        { label: "Cursive", value: "cursive" },
+    ]
+
+    const itemsAlignment = [
+        { label: "Left", value: "left", icon: <FontAwesomeIcon icon={faAlignLeft} /> },
+        { label: "Center", value: "center", icon: <FontAwesomeIcon icon={faAlignCenter} /> },
+        { label: "Right", value: "right", icon: <FontAwesomeIcon icon={faAlignRight} /> },
+    ]
+
     const addImage = () => {
         const url = window.prompt('URL')
         const commands: any = editor.commands
@@ -93,77 +127,68 @@ const Toolbar = ({ editor }: { editor: Editor }) => {
                     : "left"
     }
 
+    const getHeader = (): number => {
+        return editor.isActive('heading', { level: 1 }) ? 1
+            : editor.isActive('heading', { level: 2 }) ? 2
+                : editor.isActive('heading', { level: 3 }) ? 3
+                    : 0
+    }
+
 
     return (
-        <div className="flex justify-between border border-white mb-5 cols-3 grid grid-cols-8 gap-2 sticky top-0 z-10 items-center toolbar">
-            <button onClick={addImage}>Add image</button>
-            <select
-                className='is-active'
-                onChange={(e) => editor.chain().focus().setTextAlign(e.target.value).run()}
-                value={getAlignement()}
-            >
-                <option value="left">Left</option>
-                <option value="center">Center</option>
-                <option value="right">Right</option>
-            </select>
+        <div className="flex justify-between border border-white cols-3 grid grid-cols-6 sm:grid-cols-10 gap-2 sticky top-0 z-10 items-center toolbar p-3">
+            <button onClick={addImage}>
+                <FontAwesomeIcon icon={faImage} />
+            </button>
+            <Dropdown
+                selectedLabel={getAlignement()}
+                placeholder="Align" items={itemsAlignment}
+                onSelect={(item) => editor.chain().focus().setTextAlign(item.value).run()}
+            />
+            <Dropdown
+                className={editor.isActive("heading") ? 'is-active' : ""}
+                selectedLabel={getHeader()}
+                placeholder={faHeading}
+                items={itemsHeader}
+                onSelect={(item) => editor.chain().focus().toggleHeading({ level: item.value }).run()}
+            />
             <button
-                onClick={() => editor.chain().focus().setCodeBlock().run()}
-                disabled={editor.isActive('codeBlock')}
+                onClick={() => editor.chain().focus().toggleBold().run()}
+                className={editor.isActive('bold') ? 'is-active' : ''}
             >
-                Set code block
-            </button>
-            <button onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()} className={editor.isActive('heading', { level: 1 }) ? 'is-active' : ''}>
-                H1
-            </button>
-            <button onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()} className={editor.isActive('heading', { level: 2 }) ? 'is-active' : ''}>
-                H2
-            </button>
-            <button onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()} className={editor.isActive('heading', { level: 3 }) ? 'is-active' : ''}>
-                H3
+                <FontAwesomeIcon icon={faBold} />
             </button>
             <button
-                onClick={() => editor.chain().focus().setColor("#000000").run()}
-                className={editor.isActive('textStyle', { color: '#000000' }) ? 'is-active' : ''}
-                data-testid="setBlack"
+                onClick={() => editor.chain().focus().toggleItalic().run()}
+                className={editor.isActive('italic') ? 'is-active' : ''}
             >
-               Black 
+                <FontAwesomeIcon icon={faItalic} />
             </button>
             <button
-                onClick={() => editor.chain().focus().setColor('#F98181').run()}
-                className={editor.isActive('textStyle', { color: '#F98181' }) ? 'is-active' : ''}
-                data-testid="setRed"
+                onClick={() => editor.chain().focus().toggleStrike().run()}
+                className={editor.isActive('strike') ? 'is-active' : ''}
             >
-                Red
+                <FontAwesomeIcon icon={faStrikethrough} />
             </button>
             <button
-                onClick={() => editor.chain().focus().setColor('#FBBC88').run()}
-                className={editor.isActive('textStyle', { color: '#FBBC88' }) ? 'is-active' : ''}
-                data-testid="setOrange"
+                onClick={() => editor.chain().focus().toggleUnderline().run()}
+                className={editor.isActive('underline') ? 'is-active' : ''}
             >
-                Orange
+                <FontAwesomeIcon icon={faUnderline} />
             </button>
-            <button
-                onClick={() => editor.chain().focus().setColor('#FAF594').run()}
-                className={editor.isActive('textStyle', { color: '#FAF594' }) ? 'is-active' : ''}
-                data-testid="setYellow"
-            >
-                Yellow
-            </button>
-            <button
-                onClick={() => editor.chain().focus().setColor('#70CFF8').run()}
-                className={editor.isActive('textStyle', { color: '#70CFF8' }) ? 'is-active' : ''}
-                data-testid="setBlue"
-            >
-                Blue
-            </button>
+            <Dropdown
+                placeholder={faPalette}
+                items={itemsFontColor}
+                onSelect={(item) => editor.chain().focus().setColor(item.value).run()}
+            />
             <button
                 onClick={() => editor.chain().focus().toggleHighlight().run()}
                 className={editor.isActive('highlight') ? 'is-active' : ''}
             >
-                Toggle highlight
+                <FontAwesomeIcon icon={faHighlighter} />
             </button>
             <select
-                className={editor.isActive('highlight') ? 'is-active' : ''}
+                className={editor.isActive('highlight') ? 'is-active bg-transparent' : 'bg-transparent'}
                 onChange={(e) => editor.chain().focus().toggleHighlight({ color: e.target.value }).run()}
                 value={"HighLight"}
             >
@@ -173,47 +198,22 @@ const Toolbar = ({ editor }: { editor: Editor }) => {
                 <option value="#74c0fc">Blue</option>
                 <option value="#ffa8a8">Red</option>
             </select>
-            <button
-                onClick={() => editor.chain().focus().toggleBold().run()}
-                className={editor.isActive('bold') ? 'is-active' : ''}
-            >
-                Bold
-            </button>
-            <button
-                onClick={() => editor.chain().focus().toggleItalic().run()}
-                className={editor.isActive('italic') ? 'is-active' : ''}
-            >
-                Italic
-            </button>
-            <button
-                onClick={() => editor.chain().focus().toggleStrike().run()}
-                className={editor.isActive('strike') ? 'is-active' : ''}
-            >
-                Strike
-            </button>
-            <button
-                onClick={() => editor.chain().focus().toggleUnderline().run()}
-                className={editor.isActive('underline') ? 'is-active' : ''}
-            >
-                Toggle underline
-            </button>
-            <select
-                className='is-active'
-                onChange={(e) => editor.chain().focus().setFontFamily(e.target.value).run()}
-                value={editor.isActive('textStyle') ? editor.getAttributes('textStyle').fontFamily : 'monospace'} // Default to 16pt if not active
-            >
-                <option value="monospace">Monospace</option>
-                <option value="serif">Serif</option>
-                <option value="Comic Sans MS, Comic Sans">Comic Sans</option>
-                <option value="inter">Inter</option>
-            </select>
+
+
+            <Dropdown
+                className={editor.getAttributes('textStyle').fontFamily ? 'is-active' : ""}
+                selectedLabel={editor.getAttributes('textStyle').fontFamily ? editor.getAttributes('textStyle').fontFamily : "arial"}
+                placeholder={faFont}
+                items={itemsFontFamily}
+                onSelect={(item) => editor.chain().focus().setFontFamily(item.value).run()}
+            />
 
             <select
                 className='is-active'
                 onChange={(e) => {
                     editor.chain().focus().setFontSize(e.target.value).run()
                 }}
-                value={editor.isActive('textStyle') ? editor.getAttributes('textStyle').fontSize : '1rem'} // Default to 16pt if not active
+                value={editor.isActive('textStyle') ? editor.getAttributes('textStyle').fontSize : '1rem'}
             >
                 <option value="0.6rem">10pt</option>
                 <option value="0.8rem">12pt</option>
@@ -228,13 +228,19 @@ const Toolbar = ({ editor }: { editor: Editor }) => {
                 onClick={() => editor.chain().focus().toggleBulletList().run()}
                 className={editor.isActive('bulletList') ? 'is-active' : ''}
             >
-                Bullet list
+                <FontAwesomeIcon icon={faList} />
             </button>
             <button
                 onClick={() => editor.chain().focus().toggleOrderedList().run()}
                 className={editor.isActive('orderedList') ? 'is-active' : ''}
             >
-                Order list
+                <FontAwesomeIcon icon={faList12} />
+            </button>
+            <button
+                onClick={() => editor.chain().focus().setCodeBlock().run()}
+                disabled={editor.isActive('codeBlock')}
+            >
+                <FontAwesomeIcon icon={faCode} />
             </button>
 
         </div>

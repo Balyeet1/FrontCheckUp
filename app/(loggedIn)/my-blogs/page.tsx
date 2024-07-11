@@ -15,7 +15,7 @@ export default async function Home() {
     <section className='pt-4'>
       <h1 className="font-medium text-2xl mb-8 tracking-tighter">
         My blogs
-        <Link href={"/my-blogs/create"} className='text-blue-800'> Cretate Blog</Link>
+        <Link href={"/my-blogs/create"} className='text-blue-600 ml-2'> Cretate Blog</Link>
       </h1>
       <BlogsList token={token} />
     </section >
