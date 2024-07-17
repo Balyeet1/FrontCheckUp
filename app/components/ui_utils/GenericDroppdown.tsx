@@ -8,17 +8,24 @@ interface DropdownItem {
     icon?: React.ReactNode;
 }
 
+interface SelectedInput {
+    equal: Boolean;
+    item: DropdownItem;
+}
+
 interface DropdownProps {
     items: DropdownItem[];
-    onSelect: (item: DropdownItem) => void;
-    placeholder?: any;
+    onSelect: (item: SelectedInput) => void;
+    placeholderValue?: any;
     className?: string;
     selectedLabel?: any;
 }
 
-const Dropdown: React.FC<DropdownProps> = ({ items, onSelect, placeholder = 'Select an option', className, selectedLabel }) => {
+
+const Dropdown: React.FC<DropdownProps> = ({ items, onSelect, placeholderValue = 'Select an option', className, selectedLabel }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedItem, setSelectedItem] = useState<DropdownItem | null>(null);
+    const [placeholder, setPlaceholder] = useState<any>(placeholderValue)
     const dropdownRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -33,9 +40,11 @@ const Dropdown: React.FC<DropdownProps> = ({ items, onSelect, placeholder = 'Sel
     }, []);
 
     useEffect(() => setSelectedItem(items.find(item => item.value === selectedLabel) || null), [selectedLabel])
+    useEffect(() => setPlaceholder(placeholderValue), [placeholderValue])
 
     const handleItemClick = (item: DropdownItem) => {
-        onSelect(item);
+        //Returns item null if the item selected is equal to previous item selected
+        onSelect(item.value === selectedItem?.value ? { equal: true, item: item } : { equal: false, item: item });
         setIsOpen(false);
     };
 

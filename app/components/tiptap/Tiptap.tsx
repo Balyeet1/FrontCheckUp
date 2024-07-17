@@ -27,6 +27,7 @@ import { Color } from '@tiptap/extension-color'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBold, faHeading, faItalic, faStrikethrough, faUnderline, faCode, faList, faList12, faImage, faFont, faHighlighter, faAlignCenter, faAlignLeft, faAlignRight, faPalette, faEraser } from '@fortawesome/free-solid-svg-icons';
 import Dropdown from '@/app/components/ui_utils/GenericDroppdown';
+import isValidImageURL from '@/app/lib/utils/image_utils';
 
 const Tiptap = ({ className, content, onChange, isReadonly }: { className?: string, content?: string, onChange?: any, isReadonly: boolean }) => {
 
@@ -113,18 +114,44 @@ const Toolbar = ({ editor }: { editor: Editor }) => {
         { label: "Right", value: "right", icon: <FontAwesomeIcon icon={faAlignRight} /> },
     ]
 
+    const itemsHighlight = [
+        { label: "Yellow", value: "Yellow" },
+        { label: "Red", value: "#ffa8a8", },
+        { label: "Blue", value: "#74c0fc" },
+        { label: "Green", value: "#8ce99a" },
+    ]
+
+    const itemsFontSize = [
+        { label: "10pt", value: "0.8rem" },
+        { label: "12pt", value: "1rem" },
+        { label: "14pt", value: "1.2rem" },
+        { label: "16pt", value: "1.4rem" },
+        { label: "18pt", value: "1.6rem" },
+        { label: "20pt", value: "1.8rem" },
+        { label: "22pt", value: "2rem" },
+        { label: "24pt", value: "2.2rem" },
+    ]
+
     const addImage = () => {
         const url = window.prompt('URL')
         const commands: any = editor.commands
 
-        commands.setImage({ src: url })
+        isValidImageURL(url ? url : "")
+            .then(isValid => {
+                if (isValid) {
+                    commands.setImage({ src: url })
+                } else {
+                    window.alert("Invalid image url!!")
+                }
+            });
+
     }
 
     const getAlignement = (): string => {
         return editor.isActive({ textAlign: 'left' }) ? 'left'
             : editor.isActive({ textAlign: 'center' }) ? 'center'
                 : editor.isActive({ textAlign: 'right' }) ? 'right'
-                    : "left"
+                    : ""
     }
 
     const getHeader = (): number => {
@@ -136,21 +163,31 @@ const Toolbar = ({ editor }: { editor: Editor }) => {
 
 
     return (
-        <div className="flex justify-between border border-white cols-3 grid grid-cols-6 sm:grid-cols-10 gap-2 sticky top-0 z-10 items-center toolbar p-3">
+        <div className="flex justify-between border border-white cols-3 grid grid-cols-5 sm:grid-cols-10 gap-2 sticky top-0 z-10 items-center toolbar p-3">
             <button onClick={addImage}>
                 <FontAwesomeIcon icon={faImage} />
             </button>
             <Dropdown
                 selectedLabel={getAlignement()}
-                placeholder="Align" items={itemsAlignment}
-                onSelect={(item) => editor.chain().focus().setTextAlign(item.value).run()}
+                placeholderValue="Align"
+                items={itemsAlignment}
+                onSelect={({ equal, item }) => {
+                    if (equal) {
+                        editor.chain().focus().unsetTextAlign().run()
+                        return
+                    }
+                    editor.chain().focus().setTextAlign(item.value).run()
+                }}
             />
             <Dropdown
                 className={editor.isActive("heading") ? 'is-active' : ""}
                 selectedLabel={getHeader()}
-                placeholder={faHeading}
+                placeholderValue={faHeading}
                 items={itemsHeader}
-                onSelect={(item) => editor.chain().focus().toggleHeading({ level: item.value }).run()}
+                onSelect={({ item }) => {
+                    editor.chain().focus().toggleHeading({ level: item.value }).run()
+
+                }}
             />
             <button
                 onClick={() => editor.chain().focus().toggleBold().run()}
@@ -176,54 +213,65 @@ const Toolbar = ({ editor }: { editor: Editor }) => {
             >
                 <FontAwesomeIcon icon={faUnderline} />
             </button>
-            <Dropdown
-                placeholder={faPalette}
-                items={itemsFontColor}
-                onSelect={(item) => editor.chain().focus().setColor(item.value).run()}
-            />
-            <button
-                onClick={() => editor.chain().focus().toggleHighlight().run()}
-                className={editor.isActive('highlight') ? 'is-active' : ''}
-            >
-                <FontAwesomeIcon icon={faHighlighter} />
-            </button>
-            <select
-                className={editor.isActive('highlight') ? 'is-active bg-transparent' : 'bg-transparent'}
-                onChange={(e) => editor.chain().focus().toggleHighlight({ color: e.target.value }).run()}
-                value={"HighLight"}
-            >
-                <option value="">Highlight</option>
-                <option value="Yellow">Yellow</option>
-                <option value="#8ce99a">Green</option>
-                <option value="#74c0fc">Blue</option>
-                <option value="#ffa8a8">Red</option>
-            </select>
 
+            <Dropdown
+                className={editor.isActive("highlight") ? 'is-active' : ""}
+                selectedLabel={editor.getAttributes("highlight").color}
+                placeholderValue={faHighlighter}
+                items={itemsHighlight}
+                onSelect={({ equal, item }) => {
+                    if (equal) {
+                        editor.chain().focus().unsetHighlight().run()
+                        return
+                    }
+                    editor.chain().focus().toggleHighlight({ color: item.value }).run()
+                }}
+            />
+
+            <Dropdown
+                className={editor.getAttributes("textStyle").color ? 'is-active' : ''}
+                placeholderValue={faPalette}
+                items={itemsFontColor}
+                selectedLabel={editor.getAttributes("textStyle").color}
+                onSelect={({ equal, item }) => {
+                    if (equal) {
+                        editor.chain().focus().unsetColor().run()
+                        return
+                    }
+                    editor.chain().focus().setColor(item.value).run()
+                }
+                }
+            />
 
             <Dropdown
                 className={editor.getAttributes('textStyle').fontFamily ? 'is-active' : ""}
                 selectedLabel={editor.getAttributes('textStyle').fontFamily ? editor.getAttributes('textStyle').fontFamily : "arial"}
-                placeholder={faFont}
+                placeholderValue={faFont}
                 items={itemsFontFamily}
-                onSelect={(item) => editor.chain().focus().setFontFamily(item.value).run()}
+                onSelect={({ equal, item }) => {
+                    if (equal) {
+                        editor.chain().focus().unsetFontFamily().run()
+                        return
+                    }
+                    editor.chain().focus().setFontFamily(item.value).run()
+                }}
             />
 
-            <select
-                className='is-active'
-                onChange={(e) => {
-                    editor.chain().focus().setFontSize(e.target.value).run()
+            <Dropdown
+                className={'is-active'}
+                selectedLabel={editor.getAttributes('textStyle').fontSize ? editor.getAttributes('textStyle').fontSize : "1rem"}
+                placeholderValue={editor.getAttributes('textStyle').fontSize ? itemsFontSize.find((item) => item.value === editor.getAttributes("textStyle").fontSize)?.label : "12pt"}
+                items={itemsFontSize}
+                onSelect={({ equal, item }) => {
+                    if (equal) {
+                        editor.chain().focus().unsetFontSize().run()
+                        return
+                    }
+                    editor.chain().focus().setFontSize(item.value).run()
+
                 }}
-                value={editor.isActive('textStyle') ? editor.getAttributes('textStyle').fontSize : '1rem'}
-            >
-                <option value="0.6rem">10pt</option>
-                <option value="0.8rem">12pt</option>
-                <option value="1rem">14pt</option>
-                <option value="1.2rem">16pt</option>
-                <option value="1.4rem">18pt</option>
-                <option value="1.6rem">20pt</option>
-                <option value="1.8rem">22pt</option>
-                <option value="2rem">24pt</option>
-            </select>
+            />
+
             <button
                 onClick={() => editor.chain().focus().toggleBulletList().run()}
                 className={editor.isActive('bulletList') ? 'is-active' : ''}

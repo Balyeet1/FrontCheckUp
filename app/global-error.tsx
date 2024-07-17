@@ -9,7 +9,7 @@ export default function GlobalError({ reset }: { reset?: () => void }) {
                     <div className="text-center">
                         <h1>Something went wrong</h1>
                         <p>I apologize for the inconvenience.</p>
-                        <Link href="/">
+                        <Link className="bg-sky-300 hover:bg-sky-400" href="/">
                             Go back to the home page
                         </Link>
                     </div>

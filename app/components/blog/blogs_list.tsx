@@ -34,8 +34,8 @@ export default function BlogsList({ token }: { token: string }) {
                                 className='flex flex-wrap flex-col items-center space-y-1 md:mb-4 p-4 bg-white dark:bg-neutral-800 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg hover:scale-1.0'
                                 href={`/my-blogs/${createSlug(blog.title, blog.id.toString())}`}
                             >
-                                <strong>
-                                    <h1 className='text-neutral-900 dark:text-neutral-100 tracking-tight'>{blog.title}</h1>
+                                <strong className='w-full flex justify-center'>
+                                    <h1 className='text-neutral-900 dark:text-neutral-100 tracking-tight truncate'>{blog.title}</h1>
                                 </strong>
                                 <Suspense fallback={<p className='h-6'>Loading</p>}>
                                     {blog.image && <RenderImage src={blog.image} alt={blog.title} />}

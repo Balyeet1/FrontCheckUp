@@ -9,12 +9,18 @@ export async function fetchBlogBySlug(slug: string, token: string): Promise<{ bl
         return { blog: null };
     }
 
-    const { blog } = await get_user_blog(token, blog_id);
+    let data = null
 
-    //Compare if the slug provided belongs to the blog fetched
-    if (blog === null || slug !== createSlug(blog.title, blog_id.toString())) {
+    try {
+        data = await get_user_blog(token, blog_id);
+    } catch {
         return { blog: null };
     }
 
-    return { blog: { ...blog, id: blog_id } };
+    //Compare if the slug provided belongs to the blog fetched
+    if (data.blog === null || slug !== createSlug(data.blog.title, blog_id.toString())) {
+        return { blog: null };
+    }
+
+    return { blog: { ...data.blog, id: blog_id } };
 }

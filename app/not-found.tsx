@@ -5,7 +5,7 @@ export default function NotFound() {
         <div className="flex flex-col justify-center items-center h-screen">
             <h1 className="text-4xl">Page not found</h1>
             <div>
-                <BackButton />
+                <BackButton underline />
             </div>
         </div>
     );

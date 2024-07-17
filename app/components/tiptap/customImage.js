@@ -116,6 +116,7 @@ const getImageExtension = (isReadonly) => {
                                 ref={imageRef}
                                 width={1600}
                                 height={900}
+                                priority
                                 className={
                                     !editable ? "block w-full"
                                         : clsx(

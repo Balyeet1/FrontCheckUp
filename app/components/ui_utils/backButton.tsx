@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { Button } from "@nextui-org/react";
 
 
-const BackButton = ({ className, nextui }: { className?: string, nextui?: boolean }) => {
+const BackButton = ({ className, nextui, underline }: { className?: string, nextui?: boolean, underline?: boolean }) => {
     const router = useRouter();
 
     const handleGoBack = () => {
@@ -15,11 +15,11 @@ const BackButton = ({ className, nextui }: { className?: string, nextui?: boolea
         <>
             {!nextui ?
                 < button className={className} onClick={handleGoBack} >
-                    Back
+                    {underline ? <u>Back</u> : "Back"}
                 </button >
                 :
                 <Button className={className + " bg-sky-300 hover:bg-sky-400"} onClick={handleGoBack}>
-                    Back
+                    {underline ? <u>Back</u> : "Back"}
                 </Button>
             }
         </>

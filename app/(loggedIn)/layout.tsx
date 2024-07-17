@@ -3,6 +3,7 @@ import React from "react";
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, User } from "@nextui-org/react";
 import { useUser } from '@auth0/nextjs-auth0/client';
 import Link from "next/link";
+import { useRouter } from 'next/navigation';
 
 export default function LogedInLayout({
     children,
@@ -10,7 +11,8 @@ export default function LogedInLayout({
     children: React.ReactNode;
 }>) {
 
-    const { user } = useUser()
+    const { user } = useUser();
+    const router = useRouter();
 
     return (
         <section className="mx-auto p-3 sm:px-6 xl:px-8">
@@ -28,16 +30,16 @@ export default function LogedInLayout({
                             name={user?.name}
                         />
                     </DropdownTrigger>
-                    <DropdownMenu aria-label="User Actions" variant="flat">
-                        <DropdownItem key="profile" className="h-14 gap-2" aria-label="User Profile">
+                    <DropdownMenu disabledKeys={["profile"]} aria-label="User Actions" variant="flat">
+                        <DropdownItem key="profile" className="h-14 gap-2 opacity-100" aria-label="User Profile">
                             <p className="font-bold">Signed in as</p>
                             <p className="font-bold">{user?.nickname}</p>
                         </DropdownItem>
-                        <DropdownItem key="blogs" aria-label="My-Blogs">
-                            <Link href="/my-blogs" className="block w-full h-full">My-Blogs</Link>
+                        <DropdownItem key="blogs" aria-label="My-Blogs" onClick={() => router.push("/my-blogs")}>
+                            My-Blogs
                         </DropdownItem>
-                        <DropdownItem key="settings" aria-label="User Settings">
-                            <Link className="block w-full h-full" href="/my-profile">Settings</Link>
+                        <DropdownItem key="settings" aria-label="User Settings" onClick={() => router.push("/my-profile")}>
+                            Settings
                         </DropdownItem>
                         <DropdownItem key="logout" color="danger" href="/api/auth/logout" aria-label="Logout">
                             Log Out
