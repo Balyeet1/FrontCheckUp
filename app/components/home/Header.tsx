@@ -15,13 +15,11 @@ const headerNavLinks = [
 const Header = async () => {
 
     let user = null;
+    let session = null;
 
-    try {
-        const session = await getSession();
-        user = session?.user;
-    } catch (error: any) {
-        console.error(error, "No session found.")
-    }
+    session = await getSession();
+    user = session?.user;
+    
     return (
         <header className="flex items-center justify-between py-10">
             <div>
@@ -49,7 +47,8 @@ const Header = async () => {
                             {link.title}
                         </Link>
                     ))}
-                {user && (<Link className="font-medium" href='/my-profile/'>{user.name}</Link>)}
+                {session &&
+                    user && (<Link className="font-medium" href='/my-profile/'>{user.name}</Link>)}
                 {!user && (<Link
                     href="/api/auth/login/"
                     className="font-medium"

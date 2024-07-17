@@ -1,6 +1,10 @@
 import { getSession } from '@auth0/nextjs-auth0';
 import Image from 'next/image';
+import { Metadata } from 'next';
 
+export const metadata: Metadata = {
+  title: 'Profile',
+};
 
 export default async function ProfileServer() {
   const session = await getSession();

@@ -37,7 +37,7 @@ const Dropdown: React.FC<DropdownProps> = ({ items, onSelect, placeholderValue =
 
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, []);
+    }, [items]);
 
     useEffect(() => setSelectedItem(items.find(item => item.value === selectedLabel) || null), [selectedLabel])
     useEffect(() => setPlaceholder(placeholderValue), [placeholderValue])
