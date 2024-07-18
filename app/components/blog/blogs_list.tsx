@@ -26,7 +26,7 @@ export default function BlogsList({ token }: { token: string }) {
     return (
         <>
             {data &&
-                <div className='grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6'>
+                <div className='grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full'>
                     {data.blogs && data.blogs.length > 0 ? (
                         data.blogs.map((blog: { title: string; image: string; id: number }) => (
                             <Link
@@ -35,7 +35,7 @@ export default function BlogsList({ token }: { token: string }) {
                                 href={`/my-blogs/${createSlug(blog.title, blog.id.toString())}`}
                             >
                                 <strong className='w-full flex justify-center'>
-                                    <h1 className='text-neutral-900 dark:text-neutral-100 tracking-tight truncate'>{blog.title}</h1>
+                                    <h1 className='text-neutral-900 dark:text-neutral-100 tracking-tight sm:truncate'>{blog.title}</h1>
                                 </strong>
                                 <Suspense fallback={<p className='h-6'>Loading</p>}>
                                     {blog.image && <RenderImage src={blog.image} alt={blog.title} />}
