@@ -7,7 +7,7 @@ import { get_user_blog_headers } from '@/app/lib/db/BackServer_api/blogs_api_act
 import useApi from '@/app/lib/customHooks/useApi';
 import HandleApiError from '@/app/components/error/HandleApiError';
 
-export default function BlogsList({ token }: { token: string }) {
+export default function BlogsList({ token, imageUrl }: { token: string, imageUrl: string }) {
 
     const { data, error, loading, request: getBlogs } = useApi(get_user_blog_headers);
 
@@ -38,7 +38,7 @@ export default function BlogsList({ token }: { token: string }) {
                                     <h1 className='text-neutral-900 dark:text-neutral-100 tracking-tight sm:truncate'>{blog.title}</h1>
                                 </strong>
                                 <Suspense fallback={<p className='h-6'>Loading</p>}>
-                                    {blog.image && <RenderImage src={blog.image} alt={blog.title} />}
+                                    {blog.image && <RenderImage src={blog.image} alt={blog.title} url={imageUrl} />}
                                 </Suspense>
                             </Link>
                         ))
@@ -56,14 +56,14 @@ export default function BlogsList({ token }: { token: string }) {
     );
 }
 
-function RenderImage({ src, alt }: { src: string; alt: string }) {
+function RenderImage({ url, src, alt }: { url: string, src: string; alt: string }) {
 
     return (
         <div className='h-60'>
             <Image
                 width={200}
                 height={300}
-                src={`http://127.0.0.1:6699/checkup_api/blog/images/${src}`}
+                src={`${url}/blog/images/${src}`}
                 alt={alt}
                 className="object-cover w-full h-full rounded-md"
                 priority={true}

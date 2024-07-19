@@ -9,7 +9,7 @@ import { Accordion, AccordionItem } from "@nextui-org/react";
 import Image from 'next/image';
 import { Button } from '@nextui-org/react';
 
-const BlogContent = ({ token, blog }: { token: string, blog?: Blog }) => {
+const BlogContent = ({ imageUrl, token, blog }: { imageUrl: string, token: string, blog?: Blog }) => {
     const router = useRouter()
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
@@ -25,7 +25,7 @@ const BlogContent = ({ token, blog }: { token: string, blog?: Blog }) => {
             setContent(blog.content);
             setIsFetched(true)
             if (blog.image == null) return;
-            fetch(`http://127.0.0.1:6699/checkup_api/blog/download/${blog.image}`).then(response => {
+            fetch(`${imageUrl}/blog/download/${blog.image}`).then(response => {
                 response.blob().then(blob => {
                     setMedia(new File([blob], blog.image, { type: blob.type }));
                     setMediaUrl(URL.createObjectURL(blob));

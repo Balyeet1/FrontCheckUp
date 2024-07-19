@@ -25,7 +25,7 @@ import ListItem from '@tiptap/extension-list-item';
 import History from '@tiptap/extension-history'
 import { Color } from '@tiptap/extension-color'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBold, faHeading, faItalic, faStrikethrough, faUnderline, faCode, faList, faList12, faImage, faFont, faHighlighter, faAlignCenter, faAlignLeft, faAlignRight, faPalette, faEraser } from '@fortawesome/free-solid-svg-icons';
+import { faBold, faHeading, faItalic, faStrikethrough, faUnderline, faCode, faList, faList12, faImage, faFont, faHighlighter, faAlignCenter, faAlignLeft, faAlignRight, faPalette, faEraser, faFolder } from '@fortawesome/free-solid-svg-icons';
 import Dropdown from '@/app/components/ui_utils/GenericDroppdown';
 import isValidImageURL from '@/app/lib/utils/image_utils';
 
@@ -166,6 +166,9 @@ const Toolbar = ({ editor }: { editor: Editor }) => {
         <div className="flex justify-between border border-white cols-3 grid grid-cols-5 sm:grid-cols-10 gap-2 sticky top-0 z-10 items-center toolbar p-3">
             <button onClick={addImage}>
                 <FontAwesomeIcon icon={faImage} />
+            </button>
+            <button>
+                <FontAwesomeIcon icon={faFolder} />
             </button>
             <Dropdown
                 selectedLabel={getAlignement()}

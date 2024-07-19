@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import BlogsList from '@/app/components/blog/blogs_list';
 import { getUserToken } from "@/app/lib/utils/session_utils";
 import Link from 'next/link';
+import { BACKCHECK_API_ROUTE, BACKCHECK_URL } from '@/app/config/envVariables';
 
 export const metadata: Metadata = {
   title: 'My Blogs',
@@ -17,7 +18,7 @@ export default async function Home() {
         My blogs
         <Link href={"/my-blogs/create"} className='text-blue-600 ml-2'> Cretate Blog</Link>
       </h1>
-      <BlogsList token={token} />
+      <BlogsList token={token} imageUrl={`${BACKCHECK_URL}${BACKCHECK_API_ROUTE}`} />
     </section >
   );
 }
