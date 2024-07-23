@@ -7,11 +7,12 @@ export async function userExists(external: string): Promise<string | null> {
 
     const issuer = 'Check';
 
-    const user_data = await create_token({ 'external': external }, issuer)
+    const user_data = { "data": await create_token({ 'external': external }, issuer) }
+    console.log(user_data)
 
     try {
-        const { data } = await httpService.get(userEndpoints.Login, {
-            data: user_data,
+        const { data } = await httpService.post(userEndpoints.Login, user_data, {
+            headers: { 'Content-Type': 'application/json' },
             validateStatus: (status) => status < HTTP_STATUS_INTERNAL_SERVER_ERROR
         });
 

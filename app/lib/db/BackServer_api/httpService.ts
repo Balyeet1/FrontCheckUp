@@ -11,7 +11,7 @@ export type HttpHeaders = {
     [key: string]: string | undefined;
 }
 
-const TIMEOUT = 2500;
+const TIMEOUT = 4000;
 const BEARER = 'Bearer';
 
 
