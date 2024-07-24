@@ -42,7 +42,9 @@ import {
     faAlignRight,
     faPalette,
     faEraser,
-    faFolderPlus
+    faFolderPlus,
+    faUndo,
+    faRedo,
 } from '@fortawesome/free-solid-svg-icons';
 import Dropdown from '@/app/components/ui_utils/GenericDroppdown';
 import isValidImageURL from '@/app/lib/utils/image_utils';
@@ -181,7 +183,13 @@ const Toolbar = ({ editor }: { editor: Editor }) => {
 
 
     return (
-        <div className="flex justify-between border border-white cols-3 grid grid-cols-5 sm:grid-cols-10 gap-2 sticky top-0 z-10 items-center toolbar p-3">
+        <div className="flex justify-between border border-white cols-3 grid grid-cols-6 sm:grid-cols-9 md:grid-cols-11 gap-2 sticky top-0 z-10 items-center toolbar p-3">
+            <button onClick={() => editor.chain().focus().undo().run()} disabled={!editor.can().undo()}>
+                <FontAwesomeIcon icon={faUndo} color={!editor.can().undo() ? "gray" : "black"} />
+            </button>
+            <button onClick={() => editor.chain().focus().redo().run()} disabled={!editor.can().redo()}>
+                <FontAwesomeIcon icon={faRedo} color={!editor.can().redo() ? "gray" : "black"} />
+            </button>
             <button onClick={addImage}>
                 <FontAwesomeIcon icon={faImage} />
             </button>
