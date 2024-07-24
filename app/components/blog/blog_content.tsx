@@ -8,6 +8,8 @@ import { createSlug } from '@/app/lib/utils/utils';
 import { Accordion, AccordionItem } from "@nextui-org/react";
 import Image from 'next/image';
 import { Button } from '@nextui-org/react';
+import ImageUploader from '@/app/components/ui_utils/ImageUploader';
+
 
 const BlogContent = ({ imageUrl, token, blog }: { imageUrl: string, token: string, blog?: Blog }) => {
     const router = useRouter()
@@ -19,6 +21,8 @@ const BlogContent = ({ imageUrl, token, blog }: { imageUrl: string, token: strin
     const [mediaUrl, setMediaUrl] = useState<string | null>(null);
     const [previewMode, setPreviewMode] = useState(false);
 
+    const [file, setFile] = useState<any>();
+
     useEffect(() => {
         if (blog) {
             setTitle(blog.title);
@@ -29,6 +33,7 @@ const BlogContent = ({ imageUrl, token, blog }: { imageUrl: string, token: strin
                 response.blob().then(blob => {
                     setMedia(new File([blob], blog.image, { type: blob.type }));
                     setMediaUrl(URL.createObjectURL(blob));
+                    setFile(URL.createObjectURL(blob))
 
                 });
             });
