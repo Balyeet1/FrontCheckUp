@@ -40,12 +40,15 @@ const BlogContent = ({ imageUrl, token, blog }: { imageUrl: string, token: strin
         } else setIsFetched(true)
     }, [blog]);
 
-    const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files ? event.target.files[0] : null;
-        setMedia(file);
-        if (file) {
-            setMediaUrl(URL.createObjectURL(file));
+    const handleImageUpload = (image: File | null) => {
+        if (!image) {
+            setMedia(null)
+            setMediaUrl(null)
+            return
         }
+
+        setMedia(image);
+        setMediaUrl(URL.createObjectURL(image));
     };
 
     const togglePreviewMode = () => {
@@ -118,7 +121,9 @@ const BlogContent = ({ imageUrl, token, blog }: { imageUrl: string, token: strin
                         <div className='text-2xl font-bold pb-3'>{blog ? 'Edit Blog' : 'Create Blog'}</div>
                         <div className='flex items-end mt-5 mb-5 justify-between'>
 
-                            <label htmlFor="fileInput" className='bg-gray-100 p-2.5 border-2 border-sky-300 cursor-pointer rounded-lg'>
+                            <ImageUploader image={media} setImage={handleImageUpload} />
+
+                            { /*<label htmlFor="fileInput" className='bg-gray-100 p-2.5 border-2 border-sky-300 cursor-pointer rounded-lg'>
                                 {!media ? 'Thumbnail' : media?.name}
                             </label>
                             <input
@@ -127,7 +132,7 @@ const BlogContent = ({ imageUrl, token, blog }: { imageUrl: string, token: strin
                                 ref={fileInputRef}
                                 onChange={handleFileUpload}
                                 style={{ display: 'none' }}
-                            />
+                            />*/}
                         </div>
                     </>
                 }

@@ -1,103 +1,86 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
-// pintura
-import "@pqina/pintura/pintura.css";
-import {
-    // editor
-    openEditor,
-    locale_en_gb,
-    createDefaultImageReader,
-    createDefaultImageWriter,
-    createDefaultImageOrienter,
-    createDefaultShapePreprocessor,
-    legacyDataToImageState,
-    processImage,
+interface ImageDetails {
+    name: string;
+    size: string;
+}
 
-    // plugins
-    setPlugins,
-    plugin_crop,
-    plugin_crop_locale_en_gb,
-    plugin_finetune,
-    plugin_finetune_locale_en_gb,
-    plugin_finetune_defaults,
-    plugin_filter,
-    plugin_filter_locale_en_gb,
-    plugin_filter_defaults,
-    plugin_annotate,
-    plugin_annotate_locale_en_gb,
-    markup_editor_defaults,
-    markup_editor_locale_en_gb,
-} from "@pqina/pintura";
+export default function ImageUploader({ image, setImage }: { image: File | null, setImage: any }) {
 
-// filepond
-import "filepond/dist/filepond.min.css";
-import "filepond-plugin-file-poster/dist/filepond-plugin-file-poster.min.css";
-import { FilePond, registerPlugin } from "react-filepond";
-import FilePondPluginImageEditor from "@pqina/filepond-plugin-image-editor";
-import FilePondPluginFilePoster from "filepond-plugin-file-poster";
+    const [selectedImage, setSelectedImage] = useState<File | null>(null);
+    const [imageDetails, setImageDetails] = useState<ImageDetails | null>(null);
+
+    useEffect(() => {
+        if (image) {
+            setSelectedImage(image)
+            setImageDetails({
+                name: image.name,
+                size: (image.size / 1024).toFixed(2), // size in KB
+            });
+        }
+    }, [image])
 
 
-registerPlugin(FilePondPluginImageEditor, FilePondPluginFilePoster);
 
-// pintura
-setPlugins(plugin_crop, plugin_finetune, plugin_filter, plugin_annotate);
+    const handleImageChange = (event: any) => {
+        const file = event.target.files[0];
 
-export default function ImageUploader({ file, setFile }: { file: any, setFile: (files: any[]) => null | undefined }) {
+        // Basic validation: Ensure it's an image
+        if (file && file.type.startsWith('image/')) {
+            setSelectedImage(file);
+            setImageDetails({
+                name: file.name,
+                size: (file.size / 1024).toFixed(2), // size in KB
+            });
+            setImage(file)
+        } else {
+            alert('Please select an image file (jpg, jpeg, png, etc.).');
+        }
+    };
+
+    const removeImage = () => {
+        setSelectedImage(null);
+        setImageDetails(null);
+
+        setImage(null)
+    };
 
     return (
-        <div>
-            <FilePond
-                files={file}
-                onupdatefiles={setFile}
-                allowMultiple={false}
-                maxFiles={1}
-                credits={false}
-                name="files"
-                imageEditor={{
-                    // map legacy data objects to new imageState objects
-                    legacyDataToImageState: legacyDataToImageState,
-
-                    // used to create the editor, receives editor configuration, should return an editor instance
-                    createEditor: openEditor,
-
-                    // Required, used for reading the image data
-                    imageReader: [
-                        createDefaultImageReader,
-                        {
-                            /* optional image reader options here */
-                        },
-                    ],
-
-                    // optionally. can leave out when not generating a preview thumbnail and/or output image
-                    imageWriter: [
-                        createDefaultImageWriter,
-                        {
-                            /* optional image writer options here */
-                        },
-                    ],
-
-                    // used to generate poster images, runs an editor in the background
-                    imageProcessor: processImage,
-
-                    // editor options
-                    editorOptions: {
-                        utils: ["crop", "finetune", "filter", "annotate"],
-                        imageOrienter: createDefaultImageOrienter(),
-                        shapePreprocessor: createDefaultShapePreprocessor(),
-                        ...plugin_finetune_defaults,
-                        ...plugin_filter_defaults,
-                        ...markup_editor_defaults,
-                        locale: {
-                            ...locale_en_gb,
-                            ...plugin_crop_locale_en_gb,
-                            ...plugin_finetune_locale_en_gb,
-                            ...plugin_filter_locale_en_gb,
-                            ...plugin_annotate_locale_en_gb,
-                            ...markup_editor_locale_en_gb,
-                        },
-                    },
-                }}
-            />
+        <div className="flex flex-col items-center justify-center border border-gray-600 bg-gray-300 p-3 rounded-md">
+            <div className="rounded-md text-black">
+                <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="opacity-0 absolute cursor-pointer"
+                />
+                <span>Drag & Drop your files or <span className="text-blue-400 underline">Browse</span></span>
+            </div>
+            {selectedImage && (
+                <div className="relative mt-2 rounded-md w-52 shadow-md">
+                    <div className="flex justify-center">
+                        <img
+                            src={URL.createObjectURL(selectedImage)}
+                            alt="Preview"
+                            className="rounded-t-md"
+                            style={{ maxWidth: '100%', maxHeight: '150px' }}
+                        />
+                    </div>
+                    {imageDetails &&
+                        <div className="flex justify-between items-center px-3 py-2 bg-black bg-opacity-50 text-white text-xs rounded-b-md">
+                            <div>
+                                <p>{imageDetails.name}</p>
+                                <p>{imageDetails.size} KB</p>
+                            </div>
+                            <div>
+                                <button onClick={removeImage} className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded-full">
+                                    &times;
+                                </button>
+                            </div>
+                        </div>
+                    }
+                </div>
+            )}
         </div>
     );
 }
