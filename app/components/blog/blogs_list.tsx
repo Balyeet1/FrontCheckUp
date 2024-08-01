@@ -6,6 +6,8 @@ import { createSlug } from '@/app/lib/utils/utils';
 import { get_user_blog_headers } from '@/app/lib/db/BackServer_api/blogs_api_action';
 import useApi from '@/app/lib/customHooks/useApi';
 import HandleApiError from '@/app/components/error/HandleApiError';
+import { Card, Skeleton } from "@nextui-org/react";
+
 
 export default function BlogsList({ token, imageUrl }: { token: string, imageUrl: string }) {
 
@@ -20,7 +22,20 @@ export default function BlogsList({ token, imageUrl }: { token: string, imageUrl
     }
 
     if (loading) {
-        return <div>Loading...</div>;
+        return (
+            <div className='grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full'>
+                <Card className="max-w-[350px] h-[300px] space-y-5 p-4" radius="sm">
+                    <div className="space-y-1 mt-2">
+                        <Skeleton className="rounded-lg">
+                            <div className="h-8 rounded-lg bg-default-200"></div>
+                        </Skeleton>
+                    </div>
+                    <Skeleton className="rounded-lg">
+                        <div className="h-60 rounded-lg bg-default-300 "></div>
+                    </Skeleton>
+                </Card>
+            </div >
+        );
     }
 
     return (
