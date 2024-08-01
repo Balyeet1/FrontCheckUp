@@ -57,7 +57,7 @@ export default function ImageUploader({ image, setImage }: { image: File | null,
                 <span>Drag & Drop your files or <span className="text-blue-400 underline">Browse</span></span>
             </div>
             {selectedImage && (
-                <div className="relative mt-2 rounded-md w-52 shadow-md">
+                <div className="relative mt-2 rounded-md shadow-md">
                     <div className="flex justify-center">
                         <img
                             src={URL.createObjectURL(selectedImage)}
@@ -69,7 +69,7 @@ export default function ImageUploader({ image, setImage }: { image: File | null,
                     {imageDetails &&
                         <div className="flex justify-between items-center px-3 py-2 bg-black bg-opacity-50 text-white text-xs rounded-b-md">
                             <div>
-                                <p>{imageDetails.name}</p>
+                                <p className="truncate w-36">{imageDetails.name}</p>
                                 <p>{imageDetails.size} KB</p>
                             </div>
                             <div>

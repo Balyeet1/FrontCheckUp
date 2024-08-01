@@ -9,6 +9,7 @@ import { Accordion, AccordionItem } from "@nextui-org/react";
 import Image from 'next/image';
 import { Button } from '@nextui-org/react';
 import ImageUploader from '@/app/components/ui_utils/ImageUploader';
+import { Breadcrumbs, BreadcrumbItem } from "@nextui-org/react";
 
 
 const BlogContent = ({ imageUrl, token, blog }: { imageUrl: string, token: string, blog?: Blog }) => {
@@ -17,11 +18,9 @@ const BlogContent = ({ imageUrl, token, blog }: { imageUrl: string, token: strin
     const [content, setContent] = useState('');
     const [isFetched, setIsFetched] = useState(false)
     const [media, setMedia] = useState<File | null>(null);
-    const fileInputRef = useRef<HTMLInputElement>(null);
     const [mediaUrl, setMediaUrl] = useState<string | null>(null);
     const [previewMode, setPreviewMode] = useState(false);
-
-    const [file, setFile] = useState<any>();
+    const [currentPage, setCurrentPage] = React.useState<React.Key>("thumbnail");
 
     useEffect(() => {
         if (blog) {
@@ -33,8 +32,6 @@ const BlogContent = ({ imageUrl, token, blog }: { imageUrl: string, token: strin
                 response.blob().then(blob => {
                     setMedia(new File([blob], blog.image, { type: blob.type }));
                     setMediaUrl(URL.createObjectURL(blob));
-                    setFile(URL.createObjectURL(blob))
-
                 });
             });
         } else setIsFetched(true)
@@ -119,21 +116,32 @@ const BlogContent = ({ imageUrl, token, blog }: { imageUrl: string, token: strin
                 {!previewMode &&
                     <>
                         <div className='text-2xl font-bold pb-3'>{blog ? 'Edit Blog' : 'Create Blog'}</div>
-                        <div className='flex items-end mt-5 mb-5 justify-between'>
+                        <Breadcrumbs
+                            className='mb-4'
+                            hideSeparator
+                            onAction={(key) => setCurrentPage(key)}
+                            classNames={{
+                                list: "gap-0",
+                            }}
+                            itemClasses={{
+                                item: [
+                                    "px-2 py-0.5 border-small border-default-400",
+                                    "data-[current=true]:border-default-800 data-[current=true]:bg-foreground data-[current=true]:text-background transition-colors",
+                                    "data-[disabled=true]:border-default-400 data-[disabled=true]:bg-default-100",
+                                ],
+                            }}
+                        >
+                            <BreadcrumbItem key="thumbnail" isCurrent={currentPage === "thumbnail"}>
+                                Thumbnail
+                            </BreadcrumbItem>
+                            <BreadcrumbItem key="main content" isCurrent={currentPage === "main content"}>
+                                Main Content
+                            </BreadcrumbItem>
+                        </Breadcrumbs>
 
+                        {currentPage === "thumbnail" &&
                             <ImageUploader image={media} setImage={handleImageUpload} />
-
-                            { /*<label htmlFor="fileInput" className='bg-gray-100 p-2.5 border-2 border-sky-300 cursor-pointer rounded-lg'>
-                                {!media ? 'Thumbnail' : media?.name}
-                            </label>
-                            <input
-                                type="file"
-                                id="fileInput"
-                                ref={fileInputRef}
-                                onChange={handleFileUpload}
-                                style={{ display: 'none' }}
-                            />*/}
-                        </div>
+                        }
                     </>
                 }
                 {previewMode &&
@@ -142,7 +150,7 @@ const BlogContent = ({ imageUrl, token, blog }: { imageUrl: string, token: strin
                             <AccordionItem key="Thumbnail" aria-label="Thumbnail" title="Thumbnail">
                                 <div className='flex justify-center'>
                                     <div
-                                        className='flex flex-wrap flex-col items-center space-y-1 mb-4 max-w-100 justify-center p-4 bg-white dark:bg-neutral-800 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg hover:scale-1.0'
+                                        className='flex flex-wrap flex-col items-center space-y-1 mb-4 max-w-80 justify-center p-4 bg-white dark:bg-neutral-800 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg hover:scale-1.0'
                                     >
                                         <strong>
                                             <h1 className='text-neutral-900 dark:text-neutral-100 tracking-tight'>{title}</h1>
@@ -161,7 +169,7 @@ const BlogContent = ({ imageUrl, token, blog }: { imageUrl: string, token: strin
                 }
                 {isFetched &&
                     <>
-                        {!previewMode && <Tiptap content={content} className="focus:outline-none" onChange={setContent} isReadonly={false} />}
+                        {!previewMode && currentPage === "main content" && <Tiptap content={content} className="focus:outline-none" onChange={setContent} isReadonly={false} />}
                     </>
                 }
                 <div className='pt-5'>
