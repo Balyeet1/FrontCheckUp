@@ -24,7 +24,7 @@ export default function BlogsList({ token, imageUrl }: { token: string, imageUrl
     if (loading) {
         return (
             <div className='grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full'>
-                <Card className="max-w-[350px] h-[300px] space-y-5 p-4" radius="sm">
+                <Card className="max-w-[400px] h-[300px] space-y-5 p-4" radius="sm">
                     <div className="space-y-1 mt-2">
                         <Skeleton className="rounded-lg">
                             <div className="h-8 rounded-lg bg-default-200"></div>
