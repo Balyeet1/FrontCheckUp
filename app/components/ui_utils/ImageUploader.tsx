@@ -27,6 +27,10 @@ export default function ImageUploader({ image, setImage }: { image: File | null,
 
         // Basic validation: Ensure it's an image
         if (file && file.type.startsWith('image/')) {
+            if ((file.size / 1024) > 2000) { //Image size is bigger than 2 mb
+                window.alert(`Image size is bigger than 2 mb!!  Image size: ${(Number((file.size / 1024).toFixed(2)) / 1000).toFixed(1)} mb`)
+                return
+            }
             setSelectedImage(file);
             setImageDetails({
                 name: file.name,
