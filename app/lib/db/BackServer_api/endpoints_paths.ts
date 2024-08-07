@@ -9,6 +9,7 @@ export const blogEndpoints = {
     List: '/blog/list',
     Create: '/blog/create',
     Get: (blogId: number): string => `/blog/get?id=${blogId}`,
+    GetBlogImage: (image_name: string): string => `/blog/download/${image_name}`,
     Delete: (blogId: number): string => `/blog/delete/${blogId}`,
     Edit: (blogId: number): string => `/blog/${blogId}/edit`,
 };
