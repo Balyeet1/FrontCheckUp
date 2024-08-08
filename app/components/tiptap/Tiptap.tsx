@@ -48,6 +48,8 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import Dropdown from '@/app/components/ui_utils/GenericDroppdown';
 import isValidImageURL from '@/app/lib/utils/image_utils';
+import ImageManager from '@/app/components/images/ImageManager';
+import { useState } from 'react';
 
 const Tiptap = ({ className, content, onChange, isReadonly }: { className?: string, content?: string, onChange?: any, isReadonly: boolean }) => {
 
@@ -102,6 +104,8 @@ const Tiptap = ({ className, content, onChange, isReadonly }: { className?: stri
 
 
 const Toolbar = ({ editor }: { editor: Editor }) => {
+
+    const [openManager, setOpenManager] = useState<boolean>(false)
 
     const itemsHeader = [
         { label: "H1", value: 1, },
@@ -193,9 +197,11 @@ const Toolbar = ({ editor }: { editor: Editor }) => {
             <button onClick={addImage}>
                 <FontAwesomeIcon icon={faImage} />
             </button>
-            <button>
+            <button onClick={() => setOpenManager(true)}>
                 <FontAwesomeIcon icon={faFolderPlus} />
             </button>
+            {openManager && <ImageManager setOpenManager={setOpenManager} />}
+            
             <Dropdown
                 selectedLabel={getAlignement()}
                 placeholderValue="Align"

@@ -5,7 +5,7 @@ import { useState, useRef, useEffect } from "react";
 import clsx from 'clsx';
 import Image from 'next/image';
 import { Suspense } from 'react';
-import ImageLoadingFallback from '@/app/components/ui_utils/ImageFallback'
+import ImageLoadingFallback from '@/app/components/images/ImageFallback'
 
 
 const getImageExtension = (isReadonly) => {

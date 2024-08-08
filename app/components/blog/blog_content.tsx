@@ -2,14 +2,14 @@
 import { update_user_blog, create_user_blog } from '@/app/lib/db/BackServer_api/blogs_api_action';
 import { Blog } from '@/app/lib/db/models/definitions';
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import Tiptap from "@/app/components/tiptap/Tiptap";
 import { createSlug } from '@/app/lib/utils/utils';
 import { Accordion, AccordionItem } from "@nextui-org/react";
 import Image from 'next/image';
 import { Button } from '@nextui-org/react';
-import ImageUploader from '@/app/components/ui_utils/ImageUploader';
-import { Breadcrumbs, BreadcrumbItem } from "@nextui-org/react";
+import ImageUploader from '@/app/components/images/ImageUploader';
+import { Tabs, Tab } from "@nextui-org/react";
 
 
 const BlogContent = ({ imageUrl, token, blog }: { imageUrl: string, token: string, blog?: Blog }) => {
@@ -20,7 +20,6 @@ const BlogContent = ({ imageUrl, token, blog }: { imageUrl: string, token: strin
     const [media, setMedia] = useState<File | null>(null);
     const [mediaUrl, setMediaUrl] = useState<string | null>(null);
     const [previewMode, setPreviewMode] = useState(false);
-    const [currentPage, setCurrentPage] = React.useState<React.Key>("thumbnail");
     const [isLoading, setLoading] = useState<boolean>(false);
 
     useEffect(() => {
@@ -119,32 +118,16 @@ const BlogContent = ({ imageUrl, token, blog }: { imageUrl: string, token: strin
                 {!previewMode &&
                     <>
                         <div className='text-2xl font-bold pb-3'>{blog ? 'Edit Blog' : 'Create Blog'}</div>
-                        <Breadcrumbs
-                            className='mb-4'
-                            hideSeparator
-                            onAction={(key) => setCurrentPage(key)}
-                            classNames={{
-                                list: "gap-0",
-                            }}
-                            itemClasses={{
-                                item: [
-                                    "px-2 py-0.5 border-small border-default-400",
-                                    "data-[current=true]:border-default-800 data-[current=true]:bg-foreground data-[current=true]:text-background transition-colors",
-                                    "data-[disabled=true]:border-default-400 data-[disabled=true]:bg-default-100",
-                                ],
-                            }}
-                        >
-                            <BreadcrumbItem key="thumbnail" isCurrent={currentPage === "thumbnail"}>
-                                Thumbnail
-                            </BreadcrumbItem>
-                            <BreadcrumbItem key="main content" isCurrent={currentPage === "main content"}>
-                                Main Content
-                            </BreadcrumbItem>
-                        </Breadcrumbs>
-
-                        {currentPage === "thumbnail" &&
-                            <ImageUploader image={media} setImage={handleImageUpload} />
-                        }
+                        <Tabs aria-label="Options">
+                            <Tab key="thumbnail" title="Thumbnail">
+                                <ImageUploader image={media} setImage={handleImageUpload} />
+                            </Tab>
+                            <Tab key="main content" title="Main Content">
+                                {isFetched &&
+                                    <Tiptap content={content} className="focus:outline-none" onChange={setContent} isReadonly={false} />
+                                }
+                            </Tab>
+                        </Tabs>
                     </>
                 }
                 {previewMode &&
@@ -168,11 +151,6 @@ const BlogContent = ({ imageUrl, token, blog }: { imageUrl: string, token: strin
                         <div className='pt-4'>
                             <Tiptap content={content} className="focus:outline-none" onChange={setContent} isReadonly={true} />
                         </div>
-                    </>
-                }
-                {isFetched &&
-                    <>
-                        {!previewMode && currentPage === "main content" && <Tiptap content={content} className="focus:outline-none" onChange={setContent} isReadonly={false} />}
                     </>
                 }
                 <div className='pt-5'>
