@@ -12,6 +12,8 @@ import ImageUploader from '@/app/components/images/ImageUploader';
 import { Tabs, Tab } from "@nextui-org/react";
 
 
+import axios from 'axios';
+
 const BlogContent = ({ imageUrl, token, blog }: { imageUrl: string, token: string, blog?: Blog }) => {
     const router = useRouter()
     const [title, setTitle] = useState('');
@@ -34,9 +36,10 @@ const BlogContent = ({ imageUrl, token, blog }: { imageUrl: string, token: strin
                                 setMediaUrl(URL.createObjectURL(blob));
                             });
                         });*/
-            get_blog_image(token, blog.image).then(({ image }) => {
-                
+            get_blog_image(token, blog.image).then((response) => {
+                console.log(response)
             })
+
 
         } else setIsFetched(true)
     }, [blog]);

@@ -70,11 +70,9 @@ export async function update_user_blog(user_token: string | unknown, blog_id: nu
 
 }
 
-export async function get_blog_image(user_token: string | unknown, image_name: string): Promise<{ image: any }> {
-
-    const { data } = await httpService.get(blogEndpoints.GetBlogImage(image_name), {
-        headers: getAuthHeaders(user_token)
+export async function get_blog_image(user_token: string | unknown, image_name: string): Promise<any> {
+    return await httpService.get(blogEndpoints.GetBlogImage(image_name), {
+        headers: getAuthHeaders(user_token),
+        responseType: 'blob',
     });
-
-    return { image: data ?? null }
 }
