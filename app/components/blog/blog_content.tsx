@@ -1,11 +1,11 @@
 'use client'
-import { update_user_blog, create_user_blog } from '@/app/lib/db/BackServer_api/blogs_api_action';
+import { update_user_blog, create_user_blog, get_blog_image } from '@/app/lib/db/BackServer_api/blogs_api_action';
 import { Blog } from '@/app/lib/db/models/definitions';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import Tiptap from "@/app/components/tiptap/Tiptap";
 import { createSlug } from '@/app/lib/utils/utils';
-import { Accordion, AccordionItem } from "@nextui-org/react";
+import { Accordion, AccordionItem, image } from "@nextui-org/react";
 import Image from 'next/image';
 import { Button } from '@nextui-org/react';
 import ImageUploader from '@/app/components/images/ImageUploader';
@@ -28,12 +28,16 @@ const BlogContent = ({ imageUrl, token, blog }: { imageUrl: string, token: strin
             setContent(blog.content);
             setIsFetched(true)
             if (blog.image == null) return;
-            fetch(`${imageUrl}/blog/download/${blog.image}`).then(response => {
-                response.blob().then(blob => {
-                    setMedia(new File([blob], blog.image, { type: blob.type }));
-                    setMediaUrl(URL.createObjectURL(blob));
-                });
-            });
+            /*fetch(`${imageUrl}/blog/download/${blog.image}`).then(response => {
+                            response.blob().then(blob => {
+                                setMedia(new File([blob], blog.image, { type: blob.type }));
+                                setMediaUrl(URL.createObjectURL(blob));
+                            });
+                        });*/
+            get_blog_image(token, blog.image).then(({ image }) => {
+                
+            })
+
         } else setIsFetched(true)
     }, [blog]);
 
