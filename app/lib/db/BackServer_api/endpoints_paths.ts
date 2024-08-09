@@ -5,6 +5,10 @@ export const userEndpoints = {
     CreateUser: '/users/create',
 }
 
+export const imagesEndpoint = {
+    List: 'image/list'
+}
+
 export const blogEndpoints = {
     List: '/blog/list',
     Create: '/blog/create',

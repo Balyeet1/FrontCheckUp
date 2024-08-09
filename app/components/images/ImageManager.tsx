@@ -34,25 +34,9 @@ interface ImageValues {
     url: string;
 }
 
-const images: ImageValues[] = [
-    { name: 'lily', url: '/images/lily.jpg' },
-    { name: 'christmas cactus', url: '/images/christmas_cactus.jpg' },
-    { name: 'corn snake', url: '/images/corn_snake.jpg' },
-    { name: 'traffic', url: '/images/traffic.jpg' },
-    { name: 'puffin', url: '/images/puffin.jpg' },
-    { name: 'bridge', url: '/images/bridge.jpg' },
-    { name: 'mosquito', url: '/images/mosquito.jpg' },
-    { name: 'buzzard', url: '/images/buzzard.jpg' },
-    { name: 'heart', url: '/images/heart.jpg' },
-    { name: 'owl', url: '/images/owl.jpg' },
-    { name: 'mountain', url: '/images/mountain.jpg' },
-    { name: 'flowers', url: '/images/flowers.jpg' },
-    { name: 'modern car', url: '/images/modern_car.jpg' },
-    { name: 'beach', url: '/images/beach.jpg' },
-    { name: 'leaf', url: '/images/leaf.jpg' },
-];
-
 const ImageManager = ({ setOpenManager }: { setOpenManager: Dispatch<SetStateAction<boolean>> }) => {
+
+    
 
     const {
         getRootProps,
@@ -95,7 +79,7 @@ const ImageManager = ({ setOpenManager }: { setOpenManager: Dispatch<SetStateAct
                         </div>
                     </div>
                     <div className="pr-2 grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-4 max-h-[300px] overflow-auto">
-                        {images.map((image) => (
+                        {/* images.map((image) => (
                             <div key={image.name} className="relative group">
                                 <Image
                                     width={50}
@@ -108,7 +92,7 @@ const ImageManager = ({ setOpenManager }: { setOpenManager: Dispatch<SetStateAct
                                     {image.name}
                                 </div>
                             </div>
-                        ))}
+                        ))*/}
                     </div>
                 </div>
             </div>

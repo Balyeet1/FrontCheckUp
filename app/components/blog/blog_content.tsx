@@ -12,6 +12,11 @@ import ImageUploader from '@/app/components/images/ImageUploader';
 import { Tabs, Tab } from "@nextui-org/react";
 import { atob } from 'js-base64';
 
+
+//Remove this later ONLY FOR TEST ----------------------------------------------------------------------------------------------
+import { get_user_images_list } from '@/app/lib/db/BackServer_api/images_api_actions';
+//Remove this later ONLY FOR TEST ----------------------------------------------------------------------------------------------
+
 const BlogContent = ({ imageUrl, token, blog }: { imageUrl: string, token: string, blog?: Blog }) => {
     const router = useRouter()
     const [title, setTitle] = useState('');
@@ -30,6 +35,9 @@ const BlogContent = ({ imageUrl, token, blog }: { imageUrl: string, token: strin
                 setIsFetched(true)
                 return;
             }
+            //Remove this later ONLY FOR TEST ----------------------------------------------------------------------------------------------
+            get_user_images_list(token)
+            //Remove this later ONLY FOR TEST ----------------------------------------------------------------------------------------------
             get_blog_image(token, blog.image).then((response) => {
                 function base64ToFile(base64String: string, filename: string) {
                     const byteCharacters = atob(base64String);
