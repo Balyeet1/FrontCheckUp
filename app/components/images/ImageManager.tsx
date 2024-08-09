@@ -75,7 +75,7 @@ const ImageManager = ({ setOpenManager }: { setOpenManager: Dispatch<SetStateAct
                     <div className="pb-8">
                         <div {...getRootProps({ style })}>
                             <input {...getInputProps()} />
-                            <p>Drag 'n' drop some files here, or click to select files</p>
+                            <p>Drag and drop some file here, or click to select file</p>
                         </div>
                     </div>
                     <div className="pr-2 grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-4 max-h-[300px] overflow-auto">
