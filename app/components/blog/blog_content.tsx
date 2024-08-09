@@ -10,9 +10,7 @@ import Image from 'next/image';
 import { Button } from '@nextui-org/react';
 import ImageUploader from '@/app/components/images/ImageUploader';
 import { Tabs, Tab } from "@nextui-org/react";
-
-
-import axios from 'axios';
+import { atob } from 'js-base64';
 
 const BlogContent = ({ imageUrl, token, blog }: { imageUrl: string, token: string, blog?: Blog }) => {
     const router = useRouter()
@@ -28,18 +26,31 @@ const BlogContent = ({ imageUrl, token, blog }: { imageUrl: string, token: strin
         if (blog) {
             setTitle(blog.title);
             setContent(blog.content);
-            setIsFetched(true)
-            if (blog.image == null) return;
-            /*fetch(`${imageUrl}/blog/download/${blog.image}`).then(response => {
-                            response.blob().then(blob => {
-                                setMedia(new File([blob], blog.image, { type: blob.type }));
-                                setMediaUrl(URL.createObjectURL(blob));
-                            });
-                        });*/
+            if (blog.image == null) {
+                setIsFetched(true)
+                return;
+            }
             get_blog_image(token, blog.image).then((response) => {
-                console.log(response)
-            })
+                function base64ToFile(base64String: string, filename: string) {
+                    const byteCharacters = atob(base64String);
+                    const byteNumbers = new Array(byteCharacters.length);
+                    for (let i = 0; i < byteCharacters.length;
+                        i++) {
+                        byteNumbers[i] = byteCharacters.charCodeAt(i);
+                    }
+                    const byteArray = new Uint8Array(byteNumbers);
+                    const blob = new Blob([byteArray], {
+                        type: "image/"
+                    });
 
+                    return new File([blob], filename, { type: blob.type });
+                }
+
+                const file = base64ToFile(response, blog.image)
+                setMedia(file);
+                setMediaUrl(URL.createObjectURL(file));
+                setIsFetched(true)
+            })
 
         } else setIsFetched(true)
     }, [blog]);

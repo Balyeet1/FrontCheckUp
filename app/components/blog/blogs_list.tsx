@@ -1,9 +1,9 @@
 "use client"
-import { Suspense, useEffect } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { createSlug } from '@/app/lib/utils/utils';
-import { get_user_blog_headers } from '@/app/lib/db/BackServer_api/blogs_api_action';
+import { get_blog_image_url, get_user_blog_headers } from '@/app/lib/db/BackServer_api/blogs_api_action';
 import useApi from '@/app/lib/customHooks/useApi';
 import HandleApiError from '@/app/components/error/HandleApiError';
 import { Card, Skeleton } from "@nextui-org/react";
@@ -53,7 +53,7 @@ export default function BlogsList({ token, imageUrl }: { token: string, imageUrl
                                     <h1 className='text-neutral-900 dark:text-neutral-100 tracking-tight sm:truncate'>{blog.title}</h1>
                                 </strong>
                                 <Suspense fallback={<p className='h-6'>Loading</p>}>
-                                    {blog.image && <RenderImage src={blog.image} alt={blog.title} url={imageUrl} />}
+                                    {blog.image && <RenderImage imageName={blog.image} alt={blog.title} token={token} />}
                                 </Suspense>
                             </Link>
                         ))
@@ -71,18 +71,29 @@ export default function BlogsList({ token, imageUrl }: { token: string, imageUrl
     );
 }
 
-function RenderImage({ url, src, alt }: { url: string, src: string; alt: string }) {
+function RenderImage({ imageName, alt, token }: { imageName: string, alt: string, token: string }) {
+
+    const [imageURL, setImageURL] = useState<string | null>(null)
+
+    useEffect(() => {
+        if (imageName == null) return;
+        get_blog_image_url(token, imageName).then((response) => {
+            setImageURL(response)
+        })
+
+    }, [imageName]);
 
     return (
         <div className='h-60'>
-            <Image
-                width={200}
-                height={300}
-                src={`${url}/blog/images/${src}`}
-                alt={alt}
-                className="object-cover w-full h-full rounded-md"
-                priority={true}
-            />
+            {imageURL &&
+                <Image
+                    width={200}
+                    height={300}
+                    src={imageURL}
+                    alt={alt}
+                    className="object-cover w-full h-full rounded-md"
+                    priority={true}
+                />}
         </div>
     );
 }

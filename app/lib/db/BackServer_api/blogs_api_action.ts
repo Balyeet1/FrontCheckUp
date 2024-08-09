@@ -71,8 +71,18 @@ export async function update_user_blog(user_token: string | unknown, blog_id: nu
 }
 
 export async function get_blog_image(user_token: string | unknown, image_name: string): Promise<any> {
-    return await httpService.get(blogEndpoints.GetBlogImage(image_name), {
+    const { data } = await httpService.get(blogEndpoints.GetBlogImage(image_name), {
         headers: getAuthHeaders(user_token),
         responseType: 'blob',
     });
+
+    return data
+}
+
+export async function get_blog_image_url(user_token: string | unknown, image_name: string): Promise<any> {
+    const { data } = await httpService.get(blogEndpoints.GetBlogImageUrl(image_name), {
+        headers: getAuthHeaders(user_token),
+    });
+
+    return data
 }
