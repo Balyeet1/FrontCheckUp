@@ -51,7 +51,7 @@ import isValidImageURL from '@/app/lib/utils/image_utils';
 import ImageManager from '@/app/components/images/ImageManager';
 import { useState } from 'react';
 
-const Tiptap = ({ className, content, onChange, isReadonly }: { className?: string, content?: string, onChange?: any, isReadonly: boolean }) => {
+const Tiptap = ({ className, content, onChange, isReadonly, images }: { className?: string, content?: string, onChange?: any, isReadonly: boolean, images: [] }) => {
 
     const CustomDocument = Document.extend({
         content: 'heading block*',
@@ -96,14 +96,14 @@ const Tiptap = ({ className, content, onChange, isReadonly }: { className?: stri
 
     return (
         <div>
-            {!isReadonly && <Toolbar editor={editor} />}
+            {!isReadonly && <Toolbar editor={editor} images={images} />}
             <EditorContent editor={editor} className='mt-4 mb-4' />
         </div >
     )
 }
 
 
-const Toolbar = ({ editor }: { editor: Editor }) => {
+const Toolbar = ({ editor, images }: { editor: Editor, images: [] }) => {
 
     const [openManager, setOpenManager] = useState<boolean>(false)
 
@@ -156,6 +156,12 @@ const Toolbar = ({ editor }: { editor: Editor }) => {
         { label: "24pt", value: "2.2rem" },
     ]
 
+    const onSelectImage = (image_url: string) => {
+        const commands: any = editor.commands
+        commands.setImage({ src: image_url })
+    };
+
+
     const addImage = () => {
         const url = window.prompt('URL')
         const commands: any = editor.commands
@@ -200,8 +206,8 @@ const Toolbar = ({ editor }: { editor: Editor }) => {
             <button onClick={() => setOpenManager(true)}>
                 <FontAwesomeIcon icon={faFolderPlus} />
             </button>
-            {openManager && <ImageManager setOpenManager={setOpenManager} />}
-            
+            {openManager && <ImageManager setOpenManager={setOpenManager} images={images} onSelectImage={onSelectImage} />}
+
             <Dropdown
                 selectedLabel={getAlignement()}
                 placeholderValue="Align"

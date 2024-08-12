@@ -34,9 +34,7 @@ interface ImageValues {
     url: string;
 }
 
-const ImageManager = ({ setOpenManager }: { setOpenManager: Dispatch<SetStateAction<boolean>> }) => {
-
-    
+const ImageManager = ({ setOpenManager, images, onSelectImage }: { setOpenManager: Dispatch<SetStateAction<boolean>>, images: [], onSelectImage: (image_url: string) => void }) => {
 
     const {
         getRootProps,
@@ -78,12 +76,12 @@ const ImageManager = ({ setOpenManager }: { setOpenManager: Dispatch<SetStateAct
                             <p>Drag and drop some file here, or click to select file</p>
                         </div>
                     </div>
-                    <div className="pr-2 grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-4 max-h-[300px] overflow-auto">
-                        {/* images.map((image) => (
-                            <div key={image.name} className="relative group">
+                    <div className="pr-2 pl-2 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 overflow-auto h-52">
+                        {images.map((image) => (
+                            <div key={image.name} onClick={() => onSelectImage(image.url)} className="relative group">
                                 <Image
-                                    width={50}
-                                    height={50}
+                                    fill
+                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                     src={image.url}
                                     alt={image.name}
                                     className="w-full h-auto rounded-md shadow-lg transition-transform duration-300 transform group-hover:scale-105"
@@ -92,7 +90,7 @@ const ImageManager = ({ setOpenManager }: { setOpenManager: Dispatch<SetStateAct
                                     {image.name}
                                 </div>
                             </div>
-                        ))*/}
+                        ))}
                     </div>
                 </div>
             </div>

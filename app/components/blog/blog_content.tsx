@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import Tiptap from "@/app/components/tiptap/Tiptap";
 import { createSlug } from '@/app/lib/utils/utils';
-import { Accordion, AccordionItem, image } from "@nextui-org/react";
+import { Accordion, AccordionItem } from "@nextui-org/react";
 import Image from 'next/image';
 import { Button } from '@nextui-org/react';
 import ImageUploader from '@/app/components/images/ImageUploader';
@@ -13,11 +13,7 @@ import { Tabs, Tab } from "@nextui-org/react";
 import { atob } from 'js-base64';
 
 
-//Remove this later ONLY FOR TEST ----------------------------------------------------------------------------------------------
-import { get_user_images_list } from '@/app/lib/db/BackServer_api/images_api_actions';
-//Remove this later ONLY FOR TEST ----------------------------------------------------------------------------------------------
-
-const BlogContent = ({ imageUrl, token, blog }: { imageUrl: string, token: string, blog?: Blog }) => {
+const BlogContent = ({ token, blog, images }: { token: string, blog?: Blog, images: [] }) => {
     const router = useRouter()
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
@@ -35,9 +31,7 @@ const BlogContent = ({ imageUrl, token, blog }: { imageUrl: string, token: strin
                 setIsFetched(true)
                 return;
             }
-            //Remove this later ONLY FOR TEST ----------------------------------------------------------------------------------------------
-            get_user_images_list(token)
-            //Remove this later ONLY FOR TEST ----------------------------------------------------------------------------------------------
+
             get_blog_image(token, blog.image).then((response) => {
                 function base64ToFile(base64String: string, filename: string) {
                     const byteCharacters = atob(base64String);
@@ -150,7 +144,7 @@ const BlogContent = ({ imageUrl, token, blog }: { imageUrl: string, token: strin
                             </Tab>
                             <Tab key="main content" title="Main Content">
                                 {isFetched &&
-                                    <Tiptap content={content} className="focus:outline-none" onChange={setContent} isReadonly={false} />
+                                    <Tiptap content={content} className="focus:outline-none" onChange={setContent} isReadonly={false} images={images} />
                                 }
                             </Tab>
                         </Tabs>
@@ -175,7 +169,7 @@ const BlogContent = ({ imageUrl, token, blog }: { imageUrl: string, token: strin
                             </AccordionItem>
                         </Accordion>
                         <div className='pt-4'>
-                            <Tiptap content={content} className="focus:outline-none" onChange={setContent} isReadonly={true} />
+                            <Tiptap content={content} className="focus:outline-none" onChange={setContent} isReadonly={true} images={images} />
                         </div>
                     </>
                 }
