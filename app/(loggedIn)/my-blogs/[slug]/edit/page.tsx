@@ -1,7 +1,7 @@
 import BlogContent from "@/app/components/blog/blog_content";
 import { get_user_images_list } from '@/app/lib/db/BackServer_api/images_api_actions';
 import { Metadata } from "next";
-import { getUserToken } from "@/app/lib/utils/session_utils";
+import { getUserToken } from "@/app/lib/utils/session_utils_sv";
 import { fetchBlogBySlug } from "@/app/lib/db/blog_actions";
 import { notFound } from "next/navigation";
 

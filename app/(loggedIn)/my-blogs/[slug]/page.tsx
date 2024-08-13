@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import BlogDisplayer from '@/app/components/blog/display_blog';
 import { notFound } from 'next/navigation';
-import { getUserToken } from '@/app/lib/utils/session_utils';
+import { getUserToken } from '@/app/lib/utils/session_utils_sv';
 import { fetchBlogBySlug } from '@/app/lib/db/blog_actions';
 
 export const metadata: Metadata = {

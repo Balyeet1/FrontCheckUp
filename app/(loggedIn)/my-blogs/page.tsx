@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import BlogsList from '@/app/components/blog/blogs_list';
-import { getUserToken } from "@/app/lib/utils/session_utils";
+import { getUserToken } from "@/app/lib/utils/session_utils_sv";
 import Link from 'next/link';
 import { BACKCHECK_API_ROUTE, BACKCHECK_URL } from '@/app/config/envVariables';
 

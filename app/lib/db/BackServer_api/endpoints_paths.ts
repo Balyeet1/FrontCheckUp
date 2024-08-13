@@ -6,7 +6,8 @@ export const userEndpoints = {
 }
 
 export const imagesEndpoint = {
-    List: 'image/list'
+    List: 'image/list',
+    Store: 'image/store'
 }
 
 export const blogEndpoints = {

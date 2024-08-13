@@ -1,6 +1,14 @@
-import React, { Dispatch, SetStateAction, useMemo } from 'react';
+"use client"
+import React, { Dispatch, SetStateAction, useMemo, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
+import { getUserToken } from '@/app/lib/utils/session_utils_cl';
+import { store_image } from '@/app/lib/db/BackServer_api/images_api_actions';
 import Image from 'next/image';
+
+type ImageContent = {
+    name: string;
+    url: string;
+}
 
 const baseStyle = {
     flex: 1,
@@ -29,20 +37,18 @@ const rejectStyle = {
     borderColor: '#ff1744'
 };
 
-interface ImageValues {
-    name: string;
-    url: string;
-}
-
 const ImageManager = ({ setOpenManager, images, onSelectImage }: { setOpenManager: Dispatch<SetStateAction<boolean>>, images: [], onSelectImage: (image_url: string) => void }) => {
 
+    const user_token = getUserToken()
+
     const {
+        acceptedFiles,
         getRootProps,
         getInputProps,
         isFocused,
         isDragAccept,
         isDragReject
-    } = useDropzone({ accept: { 'image/*': [] } });
+    } = useDropzone({ maxFiles: 1, accept: { 'image/*': [] } });
 
     const style = useMemo(() => ({
         ...baseStyle,
@@ -54,6 +60,23 @@ const ImageManager = ({ setOpenManager, images, onSelectImage }: { setOpenManage
         isDragAccept,
         isDragReject
     ]);
+
+    useEffect(() => {
+        if (acceptedFiles.length == 1) {
+
+            const image = acceptedFiles[0]
+
+            console.log(image)
+
+            const formData = new FormData();
+            formData.append('file', image);
+
+            store_image(user_token, formData).then(response => {
+                console.log(response)
+            })
+
+        }
+    }, [acceptedFiles])
 
 
     return (
@@ -77,7 +100,7 @@ const ImageManager = ({ setOpenManager, images, onSelectImage }: { setOpenManage
                         </div>
                     </div>
                     <div className="pr-2 pl-2 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 overflow-auto h-52">
-                        {images.map((image) => (
+                        {images.map((image: ImageContent) => (
                             <div key={image.name} onClick={() => onSelectImage(image.url)} className="relative group">
                                 <Image
                                     fill
